@@ -1,3 +1,11 @@
+/**
+ *  @file  utils.c
+ *  @brief Arquivo com as implementações de funções úteis em geral
+ *  @date 06/04/2022
+ *  @author Gabriel Lüders (GRR20190172)
+ *  @author Richard Fernando Heise Ferreira (GRR20191053) 
+ **/
+ 
 #include <stdlib.h>
 #include <stdio.h>
 #include "utils.h"
@@ -12,6 +20,8 @@ void* mallocCheck(int size, char* error){
   return pointer;
 }
 
+/* ====================================================================================== */
+
 double** mallocMatrix(int lin, int col){
   double** mat;
   int i;
@@ -24,6 +34,8 @@ double** mallocMatrix(int lin, int col){
 
   return mat;
 }
+
+/* ====================================================================================== */
 
 void matrixDestructor(double** mat){
   free(mat[0]);

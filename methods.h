@@ -1,3 +1,11 @@
+/**
+ *  @file  methods.h
+ *  @brief Arquivo com os cabeçalhos 
+ *  @date 06/04/2022
+ *  @author Gabriel Lüders (GRR20190172)
+ *  @author Richard Fernando Heise Ferreira (GRR20191053) 
+ **/
+ 
 #ifndef METHODS_H
 #define METHODS_H
 

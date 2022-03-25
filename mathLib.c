@@ -1,3 +1,11 @@
+/**
+ *  @file  mathLib.c
+ *  @brief Arquivo com as implementações das funções de gerenciamento da mathEval
+ *  @date 06/04/2022
+ *  @author Gabriel Lüders (GRR20190172)
+ *  @author Richard Fernando Heise Ferreira (GRR20191053) 
+ **/
+
 #include <matheval.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +22,8 @@ void* getFunction(char* func){
   return f;
 }
 
+/* ====================================================================================== */
+
 function* functionConstructor(char* func){
   function* f = mallocCheck(sizeof(function), "function pointer");
   f->vars = mallocCheck(sizeof(variables), "function variables");
@@ -28,6 +38,8 @@ function* functionConstructor(char* func){
   return f;
 }
 
+/* ====================================================================================== */
+
 void functionDestructor(function *func){
   for(int i = 0; i < func->vars->varAmount; i++)
     evaluator_destroy(func->dfs[i]);
@@ -37,9 +49,13 @@ void functionDestructor(function *func){
   free(func);
 }
 
+/* ====================================================================================== */
+
 void showFunction(function* f){
   printf("f(x) = %s\n", evaluator_get_string(f->f));
 }
+
+/* ====================================================================================== */
 
 void showVariables(function* f){
   variables* vars = f->vars;
@@ -47,6 +63,8 @@ void showVariables(function* f){
     printf("%s ", vars->variables[i]);
   printf("\n");
 }
+
+/* ====================================================================================== */
 
 void showDerivatives(function* f){
   void** dfs = f->dfs;

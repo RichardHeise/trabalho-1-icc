@@ -1,3 +1,11 @@
+/**
+ *  @file  methods.c
+ *  @brief Arquivo com as implementações dos métodos numéricos
+ *  @date 06/04/2022
+ *  @author Gabriel Lüders (GRR20190172)
+ *  @author Richard Fernando Heise Ferreira (GRR20191053) 
+ **/
+ 
 #include <stdio.h>
 #include "methods.h"
 
@@ -9,6 +17,8 @@ int findMax(double** A, int i, int n){
   }
   return index;
 }
+
+/* ====================================================================================== */
 
 void switchLines(double** A, double* b, int i, int pivot, int n){
   double temp = b[i];
@@ -22,6 +32,8 @@ void switchLines(double** A, double* b, int i, int pivot, int n){
   }
 
 }
+
+/* ====================================================================================== */
 
 void elGauss(double** A, double *b, int n){
   for(int i = 0; i < n; i++){
@@ -39,6 +51,8 @@ void elGauss(double** A, double *b, int n){
   }
 }
 
+/* ====================================================================================== */
+
 void retroSub(double** A, double* b, double* x, int n){
   for(int i = n -1; i >= 0; i--){
     x[i] = b[i];
@@ -47,6 +61,8 @@ void retroSub(double** A, double* b, double* x, int n){
     x[i] /= A[i][i];
   }
 }
+
+/* ====================================================================================== */
 
 void showMatrix(double** A, double *b, int n){
   for(int i = 0; i < n; i++){
