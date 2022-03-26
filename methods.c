@@ -1,9 +1,7 @@
 /**
- *  @file  methods.c
- *  @brief Arquivo com as implementações dos métodos numéricos
- *  @date 06/04/2022
- *  @author Gabriel Lüders (GRR20190172)
- *  @author Richard Fernando Heise Ferreira (GRR20191053) 
+ *  Arquivo com as implementações dos métodos numéricos
+ *  Gabriel Lüders (GRR20190172)
+ *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/
  
 #include <stdio.h>
