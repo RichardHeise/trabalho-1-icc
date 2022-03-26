@@ -49,7 +49,7 @@ function* functionConstructor(char* func){
 void functionDestructor(function *func){
   for (int i = 0; i < func->vars->varAmount; i++) {
     for (int j = 0; j < func->vars->varAmount; j++)
-      evaluator_destroy(func->hessiana[i][j]);
+        evaluator_destroy(func->hessiana[i][j]);
   }
   for(int i = 0; i < func->vars->varAmount; i++)
     evaluator_destroy(func->dfs[i]);

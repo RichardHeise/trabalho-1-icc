@@ -8,6 +8,7 @@
 #define UTILS_H
 
 #include<time.h>
+#include <stdio.h>
 
 /**
  * Recebe int size
@@ -35,5 +36,7 @@ void matrixDestructor(void** mat);
  * Retorna o tempo atual
  */
 double timestamp(void);
+
+void parseArgs(int argc, char** argv, const char *args, FILE** valueO);
 
 #endif

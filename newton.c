@@ -7,10 +7,11 @@ sl* slConstructor(char* func) {
     sisLin->f = functionConstructor(func);
     int n = sisLin->f->vars->varAmount;
     
+    sisLin->eps = 0.000001;
     sisLin->d = n;
     sisLin->Hi = (double**) mallocMatrix(n, n, sizeof(double));
-    sisLin->Gi = mallocCheck(n, "allocationg memory for gradient array of linear system.");
-    sisLin->Xi = mallocCheck(n, "allocationg memory for variables array of linear system.");
+    sisLin->Gi = mallocCheck(sizeof(double) * n, "allocating memory for gradient array of linear system.");
+    sisLin->Xi = mallocCheck(sizeof(double) * n, "allocating memory for variables array of linear system.");
 
     return sisLin;
 }

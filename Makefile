@@ -20,13 +20,16 @@ newtonPC: $(OBJ)
 	$(CC) -o newtonPC $(OBJ) $(LIBS)
 
 run: all
-	./newtonPC 
+	./newtonPC < fornecido/funcoes2.dat
 
 valgrind: all
-	valgrind ./newtonPC
+	valgrind ./newtonPC < fornecido/funcoes2.dat
 
 valgrindFull: all
-	valgrind --leak-check=full --show-leak-kinds=all ./newtonPC
+	valgrind --leak-check=full --show-leak-kinds=all  ./newtonPC < fornecido/funcoes2.dat
+
+valgrindDoubleFree: all
+	valgrind --track-origins=yes --keep-stacktraces=alloc-and-free --error-limit=no --num-callers=40 ./newtonPC < fornecido/funcoes2.dat
 
 main.o: main.c
 	$(CC) -c main.c $(CFLAGS)

@@ -9,6 +9,8 @@ typedef struct S_SL {
     double* Gi;
     double* Xi;
     unsigned int d;
+    double eps;
+    unsigned int maxIter;
 } sl;
 
 sl* slConstructor(char* func);
