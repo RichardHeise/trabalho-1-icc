@@ -6,6 +6,7 @@
  
 #include <stdio.h>
 #include "methods.h"
+#include "newton.h"
 
 int findMax(double** A, int i, int n){
   int index = i;
@@ -32,7 +33,7 @@ void switchLines(double** A, double* b, int i, int pivot, int n){
 }
 
 /* ====================================================================================== */
-
+// arriba
 void elGauss(double** A, double *b, int n){
   for(int i = 0; i < n; i++){
     int pivot = findMax(A, i, n);
@@ -70,4 +71,18 @@ void showMatrix(double** A, double *b, int n){
     printf("| %f\n", b[i]);
   }
   printf("\n");
+}
+
+/* ====================================================================================== */
+
+void calcHessiana(sl* sisLin) {
+  for (int i = 0; i < sisLin->d; i++) {
+    for (int j = 0; j < sisLin->d; j++) {
+      sisLin->Hi[i][j] = evaluator_evaluate(
+        sisLin->f->hessiana[i][j], 
+        sis_lin->d, 
+        sis_lin->f->vars->variables, sisLin->Xi
+      );
+    }
+  }
 }

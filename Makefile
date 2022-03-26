@@ -14,19 +14,19 @@ OBJ = main.o newton.o mathLib.o utils.o methods.o
 
 # ----------------------------------------------------------------- #
 # Declaração das diretrizes de compilação
-all: newtonSNL
+all: newtonPC
 
-newtonSNL: $(OBJ)
-	$(CC) -o newtonSNL $(OBJ) $(LIBS)
+newtonPC: $(OBJ)
+	$(CC) -o newtonPC $(OBJ) $(LIBS)
 
 run: all
-	./newtonSNL 
+	./newtonPC 
 
 valgrind: all
-	valgrind ./newtonSNL
+	valgrind ./newtonPC
 
 valgrindFull: all
-	valgrind --leak-check=full --show-leak-kinds=all ./newtonSNL
+	valgrind --leak-check=full --show-leak-kinds=all ./newtonPC
 
 main.o: main.c
 	$(CC) -c main.c $(CFLAGS)
@@ -49,4 +49,4 @@ clean:
 	$(RM) *.o
 
 purge: clean
-	$(RM) newtonSNL
+	$(RM) newtonPC

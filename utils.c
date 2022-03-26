@@ -20,22 +20,30 @@ void* mallocCheck(int size, char* error){
 
 /* ====================================================================================== */
 
-double** mallocMatrix(int lin, int col){
-  double** mat;
+void** mallocMatrix(int lin, int col, unsigned int varSize){
+  void** mat;
   int i;
 
-  mat = mallocCheck(lin * sizeof(double*), "allocating line pointers for matrix");
-  mat[0] = mallocCheck(lin * col * sizeof(double), "allocating element vector");
+  mat = mallocCheck(lin * sizeof(void*), "allocating line pointers for matrix");
+  mat[0] = mallocCheck(lin * col * varSize, "allocating element vector");
 
   for(i = 1; i < lin; i++)
-    mat[i] = mat[0] + i * col;
+    mat[i] = mat[0] + i * col * varSize;
 
   return mat;
 }
 
 /* ====================================================================================== */
 
-void matrixDestructor(double** mat){
+void matrixDestructor(void** mat){
   free(mat[0]);
   free(mat);
+}
+
+
+double timestamp(void)
+{
+  struct timespec tp;
+  clock_gettime(CLOCK_MONOTONIC_RAW, &tp);
+  return((double)(tp.tv_sec*1.0e3 + tp.tv_nsec*1.0e-6));
 }

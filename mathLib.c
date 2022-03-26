@@ -29,21 +29,34 @@ function* functionConstructor(char* func){
   f->f = getFunction(func);
   evaluator_get_variables(f->f, &f->vars->variables, &f->vars->varAmount); 
 
+  // dfs é o vetor de derivadas parciais, portanto, o gradiente :)
   f->dfs = mallocCheck(sizeof(void*) * f->vars->varAmount, "function derivatives");
+  f->hessiana = (void***) mallocMatrix(f->vars->varAmount, f->vars->varAmount, sizeof(void*));
+
+  // calcula dfs e hessiana em 2 fors
   for(int i = 0; i < f->vars->varAmount; i++){
     f->dfs[i] = evaluator_derivative(f->f, f->vars->variables[i]);
+    for (int j = 0; j < f->vars->varAmount; j++) {
+      f->hessiana[i][j] = evaluator_derivative(f->dfs[i], f->vars->variables[j]);
+    }
   } 
+
   return f;
 }
 
 /* ====================================================================================== */
 
 void functionDestructor(function *func){
+  for (int i = 0; i < func->vars->varAmount; i++) {
+    for (int j = 0; j < func->vars->varAmount; j++)
+      evaluator_destroy(func->hessiana[i][j]);
+  }
   for(int i = 0; i < func->vars->varAmount; i++)
     evaluator_destroy(func->dfs[i]);
   evaluator_destroy(func->f);
   free(func->dfs);
   free(func->vars);
+  matrixDestructor((void**)func->hessiana);
   free(func);
 }
 
@@ -70,3 +83,18 @@ void showDerivatives(function* f){
   for(int i = 0; i < vars->varAmount; i++)
     printf("f'(%s) = %s\n", vars->variables[i], evaluator_get_string(dfs[i]));
 }
+
+/* ====================================================================================== */
+
+void showHessiana(function* f) {
+  void*** hes = f->hessiana;
+  variables* vars = f->vars;
+  for (int i = 0; i < f->vars->varAmount; i++) {
+    for (int j = 0; j < f->vars->varAmount; j++) {
+      printf("f''(%s, %s) = %s | ", vars->variables[i], vars->variables[j], evaluator_get_string(hes[i][j]));
+    }
+    printf("\n");
+  }
+}
+
+/* ====================================================================================== */

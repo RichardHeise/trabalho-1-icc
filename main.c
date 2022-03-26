@@ -4,20 +4,24 @@
 #include "utils.h"
 #include "methods.h"
 #include "mathLib.h"
+#include "newton.h"
 
 int main(void){
-  function* f = functionConstructor("-log(1-x1-x2)-log(x1)-log(x2)");
-  double teste[] = {1, 2};
-  printf("value: %f\n", evaluator_evaluate(f->dfs[0] , f->vars->varAmount, f->vars->variables, teste));  
-  showFunction(f);
-  showVariables(f);
-  showDerivatives(f);
-  functionDestructor(f);
+  // function* f = functionConstructor("-log(1-x1-x2)-log(x1)-log(x2)");
+  printf("Sistema linear vem ai hein\n\n");
+  sl* sis_lin = slConstructor("7*x1-log(x1)");
+  double teste[] = {0.1};
+  printf("value: %f\n", evaluator_evaluate(sis_lin->f->dfs[0] , sis_lin->f->vars->varAmount, sis_lin->f->vars->variables, teste));  
+  showFunction(sis_lin->f);
+  showVariables(sis_lin->f);
+  showDerivatives(sis_lin->f);
+  printf("\n");
+  showHessiana(sis_lin->f);
   printf("\n\n");
   
   int n = 3;
   // double A[3][3] = {{2, 3, 4}, {1, 3, 4}, {7, 8, 7}};
-  double** A = mallocMatrix(n, n);
+  double** A = (double**) mallocMatrix(n, n, sizeof(double));
   A[0][0] = 2;
   A[0][1] = 20;
   A[0][2] = 4;
@@ -40,7 +44,10 @@ int main(void){
     printf("%f\n", x[i]);
   }
 
-  matrixDestructor(A);
+  matrixDestructor((void**)A);
 
+  
+  slDestructor(sis_lin);
+  
   return 0;
 }

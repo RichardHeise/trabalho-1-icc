@@ -8,16 +8,17 @@
 #define MATH_SNL_H
 
 // Struct para guardar as variáveis da equação
-typedef struct SVariables{
+typedef struct S_Variables{
   char** variables;
   int varAmount;
 }variables;
 
 // Struct para guardar o valor da função, da derivada e as variáveis da função
-typedef struct SFunction{
+typedef struct S_Function{
   void* f;
   void** dfs;
   variables* vars;
+  void*** hessiana;
 }function;
 
 /**
@@ -50,5 +51,7 @@ void showDerivatives(function* f);
  * Função para resgatar uma function
  */
 void showFunction(function* f);
+
+void showHessiana(function* f);
 
 #endif

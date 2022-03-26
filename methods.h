@@ -32,4 +32,6 @@ void showMatrix(double** A, double *b, int n);
  */
 void retroSub(double** A, double* b, double* x, int n);
 
+void calcHessiana(sl* sisLin);
+
 #endif

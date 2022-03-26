@@ -7,6 +7,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include<time.h>
+
 /**
  * Recebe int size
  * Recebe char* error 
@@ -21,12 +23,17 @@ void* mallocCheck(int size, char* error);
  * Função para alocar uma matriz na memória
  * Retorna uma matriz alocada dinamicamente
  */
-double** mallocMatrix(int lin, int col);
+void** mallocMatrix(int lin, int col, unsigned int varSize);
 
 /**
  * Recebe double** mat
  * Função para destruir uma matriz
  */
-void matrixDestructor(double** mat);
+void matrixDestructor(void** mat);
+
+/**
+ * Retorna o tempo atual
+ */
+double timestamp(void);
 
 #endif
