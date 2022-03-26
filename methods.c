@@ -5,6 +5,7 @@
  **/
  
 #include <stdio.h>
+#include <matheval.h>
 #include "methods.h"
 #include "newton.h"
 
@@ -80,9 +81,21 @@ void calcHessiana(sl* sisLin) {
     for (int j = 0; j < sisLin->d; j++) {
       sisLin->Hi[i][j] = evaluator_evaluate(
         sisLin->f->hessiana[i][j], 
-        sis_lin->d, 
-        sis_lin->f->vars->variables, sisLin->Xi
+        sisLin->d, 
+        sisLin->f->vars->variables, 
+        sisLin->Xi
       );
     }
+  }
+}
+
+void calcGradient(sl* sisLin) {
+  for(int i = 0; i < sisLin->d; i++){
+    sisLin->Gi[i] = evaluator_evaluate(
+      sisLin->f->dfs[i],
+      sisLin->d,
+      sisLin->f->vars->variables,
+      sisLin->Xi
+    );
   }
 }

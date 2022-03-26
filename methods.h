@@ -7,6 +7,8 @@
 #ifndef METHODS_H
 #define METHODS_H
 
+#include "newton.h"
+
 /**
  * Recebe double** A
  * Recebe double* b
@@ -33,5 +35,7 @@ void showMatrix(double** A, double *b, int n);
 void retroSub(double** A, double* b, double* x, int n);
 
 void calcHessiana(sl* sisLin);
+
+void calcGradient(sl* sisLin);
 
 #endif
