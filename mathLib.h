@@ -19,6 +19,7 @@ typedef struct S_Function{
   void** dfs;
   variables* vars;
   void*** hessiana;
+  char* strFunc;
 }function;
 
 /**

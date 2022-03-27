@@ -7,6 +7,7 @@
 #include <matheval.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mathLib.h"
 #include "utils.h"
 
@@ -25,6 +26,9 @@ void* getFunction(char* func){
 function* functionConstructor(char* func){
   function* f = mallocCheck(sizeof(function), "function pointer");
   f->vars = mallocCheck(sizeof(variables), "function variables");
+
+  f->strFunc = mallocCheck(sizeof(char) * strlen(func), "allocating strFunc name");
+  strcpy(f->strFunc, func);
 
   f->f = getFunction(func);
   evaluator_get_variables(f->f, &f->vars->variables, &f->vars->varAmount); 
@@ -56,6 +60,7 @@ void functionDestructor(function *func){
   evaluator_destroy(func->f);
   free(func->dfs);
   free(func->vars);
+  free(func->strFunc);
   matrixDestructor((void**)func->hessiana);
   free(func);
 }

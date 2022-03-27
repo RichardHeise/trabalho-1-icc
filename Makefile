@@ -10,7 +10,7 @@ CFLAGS = -Wall -g
 CC = gcc
 LIBS = -lm -lmatheval
 OBJ = main.o newton.o mathLib.o utils.o methods.o
-
+INPUT = fornecido/funcoes.dat
 
 # ----------------------------------------------------------------- #
 # Declaração das diretrizes de compilação
@@ -20,16 +20,16 @@ newtonPC: $(OBJ)
 	$(CC) -o newtonPC $(OBJ) $(LIBS)
 
 run: all
-	./newtonPC < fornecido/funcoes2.dat
+	./newtonPC < $(INPUT)
 
 valgrind: all
-	valgrind ./newtonPC < fornecido/funcoes2.dat
+	valgrind ./newtonPC < $(INPUT)
 
 valgrindFull: all
-	valgrind --leak-check=full --show-leak-kinds=all  ./newtonPC < fornecido/funcoes2.dat
+	valgrind --leak-check=full --show-leak-kinds=all  ./newtonPC < $(INPUT)
 
 valgrindDoubleFree: all
-	valgrind --track-origins=yes --keep-stacktraces=alloc-and-free --error-limit=no --num-callers=40 ./newtonPC < fornecido/funcoes2.dat
+	valgrind --track-origins=yes --keep-stacktraces=alloc-and-free --error-limit=no --num-callers=40 ./newtonPC < $(INPUT)
 
 main.o: main.c
 	$(CC) -c main.c $(CFLAGS)

@@ -9,12 +9,14 @@ sl* slConstructor(char* func) {
     int n = sisLin->f->vars->varAmount;
     
     sisLin->eps = 0.000001;
+    sisLin->maxIter = 0;
     sisLin->d = n;
     sisLin->Hi = (double**) mallocMatrix(n, n, sizeof(double));
     sisLin->Gi = mallocCheck(sizeof(double) * n, "allocating memory for gradient array of linear system.");
     sisLin->nGi = mallocCheck(sizeof(double) * n, "allocating memory for negated gradient array of linear system.");
     sisLin->deltai = mallocCheck(sizeof(double) * n, "allocating memory for delta array.");
     sisLin->Xi = mallocCheck(sizeof(double) * n, "allocating memory for variables array of linear system.");
+
 
     return sisLin;
 }
@@ -29,23 +31,22 @@ void slDestructor(sl* sisLin) {
     free(sisLin);
 }
 
-double* newtonDefault(sl* sisLin) {
-
-    calcGradient(sisLin);
+void newtonDefault(sl* sisLin) {
     for (int i = 0; i < sisLin->maxIter-1; i++) {
+        calcGradient(sisLin);
+
         if ( norm(sisLin->Gi, sisLin->d) < sisLin->eps ) 
-            return sisLin->Xi;
-        
+            return;
+
+        calcHessiana(sisLin);   
         solveSL(sisLin);
 
         for (int j = 0; j < sisLin->d; j++)
             sisLin->Xi[j] = sisLin->Xi[j] + sisLin->deltai[j];
         
-        if ( norm(sisLin->deltai, sisLin->d) < sisLin->d ) {
-            return sisLin->Xi;
-        }
+        if ( norm(sisLin->deltai, sisLin->d) < sisLin->eps ) 
+            return;
+        
     }
-
-    return sisLin->Xi;
 }
 

@@ -9,7 +9,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/newtonPC",
-      "args": ["<", "/home/luders/trabalho-1-icc/fornecido/funcoes2.dat"],
+      "args": ["<", "${workspaceFolder}/fornecido/funcoes.dat"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

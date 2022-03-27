@@ -41,4 +41,6 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO);
 
 double norm(double* vector, unsigned int n);
 
+int notEndLine(char* buffer);
+
 #endif

@@ -19,6 +19,6 @@ sl* slConstructor(char* func);
 
 void slDestructor(sl* sisLin);
 
-double* newtonDefault(sl* sisLin);
+void newtonDefault(sl* sisLin);
 
 #endif 

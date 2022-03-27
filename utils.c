@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>
+#include <ctype.h>
 #include "utils.h"
 
 void* mallocCheck(int size, char* error){
@@ -100,11 +101,16 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO){
   }
 }
 
-double norm(double* vector, unsigned int n) {
-  double norm = 0.0;
-  for (int i = 0; i < n; i++) {
-      norm += vector[i]*vector[i];
+double norm(double* v, unsigned int n) {
+  double max = fabs(v[0]);
+  for (int i = 1; i < n; i++) {
+    if(fabs(v[i]) > max)
+      max = fabs(v[i]);
   }
 
-  return sqrt(norm);
+  return max;
+}
+
+int notEndLine(char* buffer){
+  return buffer[0] != '\n';
 }

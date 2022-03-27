@@ -16,11 +16,12 @@ int main(int argc, char** argv){
     for(int i = 0; i < 5 && fscanf(stdin, "%m[^\n]", &buffer) > 0; i++){
       // filters the \n at the end of a line after fscanf
       fgetc(stdin);
+      
       double num;
       char* p;
       unsigned int pos;
       int k = 0;
-
+      
       switch (i){
         case 1:
           linSys = slConstructor(buffer);
@@ -43,18 +44,21 @@ int main(int argc, char** argv){
         default:
           break;
       }
-
+      
       free(buffer);
     }
     
-    double* resposta = mallocCheck(linSys->d * sizeof(double), "teste");
-    resposta = newtonDefault(linSys);
+    newtonDefault(linSys);
 
-    for (int w = 0; w < linSys->d; w++) {
-      printf("resposta[%d]: %lf\n", w, resposta[w]);
-    }
+    fprintf(output, "%.8s: %1.14e\n", linSys->f->strFunc, evaluator_evaluate(
+      linSys->f->f,
+      linSys->d,
+      linSys->f->vars->variables,
+      linSys->Xi
+    ));
 
     slDestructor(linSys);
+
     fgetc(stdin);
   }
 
