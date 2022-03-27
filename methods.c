@@ -35,7 +35,12 @@ void switchLines(double** A, double* b, int i, int pivot, int n){
 
 /* ====================================================================================== */
 // arriba
-void elGauss(double** A, double *b, int n){
+void elGauss(sl* linSys){
+
+  double** A = linSys->Hi;
+  double*  b = linSys->nGi;
+  int      n = linSys->d;
+  
   for(int i = 0; i < n; i++){
     int pivot = findMax(A, i, n);
     if(pivot != i)
@@ -53,7 +58,13 @@ void elGauss(double** A, double *b, int n){
 
 /* ====================================================================================== */
 
-void retroSub(double** A, double* b, double* x, int n){
+void retroSub(sl* sysLin){
+
+  double** A = sysLin->Hi;
+  double* b = sysLin->nGi;
+  double* x = sysLin->deltai;
+  int n = sysLin->d;
+
   for(int i = n -1; i >= 0; i--){
     x[i] = b[i];
     for(int j = i + 1; j < n; j++)
@@ -97,5 +108,12 @@ void calcGradient(sl* sisLin) {
       sisLin->f->vars->variables,
       sisLin->Xi
     );
+
+    sisLin->nGi[i] = (-1*sisLin->Gi[i]);
   }
+}
+
+void solveSL(sl* linSys) {
+  elGauss(linSys);
+  retroSub(linSys);
 }

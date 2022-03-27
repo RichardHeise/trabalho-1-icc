@@ -15,7 +15,7 @@
  * Recebe int n 
  * Eliminação de Gauss com pivoteamento
  */
-void elGauss(double** A, double *b, int n);
+void elGauss(sl* sysLin);
 
 /**
  * Recebe double** A
@@ -32,10 +32,12 @@ void showMatrix(double** A, double *b, int n);
  * Recebe int n 
  * Realiza a retrosubstituição 
  */
-void retroSub(double** A, double* b, double* x, int n);
+void retroSub(sl* sysLin);
 
 void calcHessiana(sl* sisLin);
 
 void calcGradient(sl* sisLin);
+
+void solveSL(sl* linSys);
 
 #endif

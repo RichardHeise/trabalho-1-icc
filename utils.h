@@ -39,4 +39,6 @@ double timestamp(void);
 
 void parseArgs(int argc, char** argv, const char *args, FILE** valueO);
 
+double norm(double* vector, unsigned int n);
+
 #endif

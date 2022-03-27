@@ -17,16 +17,19 @@ int main(int argc, char** argv){
       // filters the \n at the end of a line after fscanf
       fgetc(stdin);
       double num;
+      char* p;
+      unsigned int pos;
       int k = 0;
 
       switch (i){
         case 1:
           linSys = slConstructor(buffer);
           break;
-        // esse caso 2 tá fazendo com que as coisas deem double free
         case 2:
-          while(k < linSys->d && sscanf(buffer, "%lf", &num) > 0){
+          p = buffer;
+          while(k < linSys->d && (sscanf(p, "%lf %n", &num, &pos) > 0 && p[0])) {
             linSys->Xi[k] = num;
+            p += pos;
             k++;
           }
           break;
@@ -44,7 +47,12 @@ int main(int argc, char** argv){
       free(buffer);
     }
     
-    // processar o bloco
+    double* resposta = mallocCheck(linSys->d * sizeof(double), "teste");
+    resposta = newtonDefault(linSys);
+
+    for (int w = 0; w < linSys->d; w++) {
+      printf("resposta[%d]: %lf\n", w, resposta[w]);
+    }
 
     slDestructor(linSys);
     fgetc(stdin);

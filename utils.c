@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <math.h>
 #include "utils.h"
 
 void* mallocCheck(int size, char* error){
@@ -97,5 +98,13 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO){
 
     option = getopt(argc, argv, args);
   }
+}
 
+double norm(double* vector, unsigned int n) {
+  double norm = 0.0;
+  for (int i = 0; i < n; i++) {
+      norm += vector[i]*vector[i];
+  }
+
+  return sqrt(norm);
 }

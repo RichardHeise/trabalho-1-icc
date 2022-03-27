@@ -7,7 +7,9 @@ typedef struct S_SL {
     function* f;
     double** Hi;
     double* Gi;
+    double* nGi;
     double* Xi;
+    double* deltai;
     unsigned int d;
     double eps;
     unsigned int maxIter;
@@ -16,5 +18,7 @@ typedef struct S_SL {
 sl* slConstructor(char* func);
 
 void slDestructor(sl* sisLin);
+
+double* newtonDefault(sl* sisLin);
 
 #endif 
