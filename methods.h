@@ -40,4 +40,8 @@ void calcGradient(sl* sisLin);
 
 void solveSL(sl* linSys);
 
+void newtonGS(sl* linSys);
+
+void gaussSeidel (sl* linSys);
+
 #endif

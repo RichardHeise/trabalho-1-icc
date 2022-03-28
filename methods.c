@@ -8,6 +8,7 @@
 #include <matheval.h>
 #include "methods.h"
 #include "newton.h"
+#include <math.h>
 
 int findMax(double** A, int i, int n){
   int index = i;
@@ -116,4 +117,36 @@ void calcGradient(sl* sisLin) {
 void solveSL(sl* linSys) {
   elGauss(linSys);
   retroSub(linSys);
+}
+
+void gaussSeidel(sl* linSys) {
+  int n = linSys->d;
+  
+  for (int w = 0; w < n; w++) linSys->deltai[w] = 0.0;
+  double **A = linSys->Hi;
+  double *B = linSys->nGi;
+  double *X = linSys->deltai;
+  double erro = 10e-6;
+
+  int k, i, j;
+  double s, xk, norma, diff = 0;
+  norma=1.0+erro;
+
+  for (k=0; norma > erro; ++k) {
+    norma = 0.0;
+
+    for (i=0; i < n; ++i) {
+      for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
+
+      for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
+
+      xk = (B[i] - s) / A[i][i];
+
+      diff = fabs(xk - X[i]);
+
+      if (diff > norma) norma = diff;
+
+      X[i] = xk;
+    }
+  }
 }
