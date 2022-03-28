@@ -14,16 +14,20 @@ int main(int argc, char** argv){
   char* buffer;
   sl* linSys;
   sl* linSys2;
+  int validBuffer;
+  int processSl;
   for(; !feof(stdin); ){
-    for(int i = 0; i < 5 && fscanf(stdin, "%m[^\n]", &buffer) > 0; i++){
-      // filters the \n at the end of a line after fscanf
-      fgetc(stdin);
-      
+    validBuffer = fscanf(stdin, "%ms", &buffer) > 0;
+    processSl = validBuffer;
+    for(int i = 0; i < 4 && validBuffer; i++){
       double num;
       char* p;
       unsigned int pos;
       int k = 0;
       
+      // filters the \n after fscanf
+      fgetc(stdin);
+
       switch (i){
         case 1:
           linSys = slConstructor(buffer);
@@ -48,34 +52,37 @@ int main(int argc, char** argv){
       }
       
       free(buffer);
+      validBuffer = fscanf(stdin, "%m[^\n]", &buffer) > 0;
     }
     
-    linSys2 = copySl(linSys);
+    free(buffer);
+    if(processSl){
+      linSys2 = copySl(linSys);
 
-    newtonDefault(linSys);
+      newtonDefault(linSys);
 
-    fprintf(output, "%.8s: %1.14e\n", linSys->f->strFunc, evaluator_evaluate(
-      linSys->f->f,
-      linSys->d,
-      linSys->f->vars->variables,
-      linSys->Xi
-    ));
+      fprintf(output, "%.8s: %1.14e\n", linSys->f->strFunc, evaluator_evaluate(
+        linSys->f->f,
+        linSys->d,
+        linSys->f->vars->variables,
+        linSys->Xi
+      ));
 
-    newtonGS(linSys2);
+      newtonGS(linSys2);
 
-    fprintf(output, "%.8s: %1.14e\n", linSys2->f->strFunc, evaluator_evaluate(
-      linSys2->f->f,
-      linSys2->d,
-      linSys2->f->vars->variables,
-      linSys2->Xi
-    ));
+      fprintf(output, "%.8s: %1.14e\n", linSys2->f->strFunc, evaluator_evaluate(
+        linSys2->f->f,
+        linSys2->d,
+        linSys2->f->vars->variables,
+        linSys2->Xi
+      ));
 
-    printf("\n");
+      printf("\n");
 
-    slDestructor(linSys);
-    slDestructor(linSys2);
-
-    fgetc(stdin);
+      slDestructor(linSys);
+      slDestructor(linSys2);
+    }
+    
   }
 
   return 0;
