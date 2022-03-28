@@ -27,7 +27,7 @@ function* functionConstructor(char* func){
   function* f = mallocCheck(sizeof(function), "function pointer");
   f->vars = mallocCheck(sizeof(variables), "function variables");
 
-  f->strFunc = mallocCheck(sizeof(char) * strlen(func), "allocating strFunc name");
+  f->strFunc = mallocCheck(sizeof(char) * (strlen(func) + 1), "allocating strFunc name");
   strcpy(f->strFunc, func);
 
   f->f = getFunction(func);

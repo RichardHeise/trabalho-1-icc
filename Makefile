@@ -10,7 +10,7 @@ CFLAGS = -Wall -g
 CC = gcc
 LIBS = -lm -lmatheval
 OBJ = main.o newton.o mathLib.o utils.o methods.o
-INPUT = fornecido/funcoes.dat
+INPUT = fornecido/funcoes2.dat
 
 # ----------------------------------------------------------------- #
 # Declaração das diretrizes de compilação
