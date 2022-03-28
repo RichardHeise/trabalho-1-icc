@@ -6,9 +6,10 @@
  
 #include <stdio.h>
 #include <matheval.h>
+#include <string.h>
+#include <math.h>
 #include "methods.h"
 #include "newton.h"
-#include <math.h>
 
 int findMax(double** A, int i, int n){
   int index = i;
@@ -122,7 +123,7 @@ void solveSL(sl* linSys) {
 void gaussSeidel(sl* linSys) {
   int n = linSys->d;
   
-  for (int w = 0; w < n; w++) linSys->deltai[w] = 0.0;
+  memset(linSys->deltai, 0, sizeof(double)*linSys->d);
   double **A = linSys->Hi;
   double *B = linSys->nGi;
   double *X = linSys->deltai;

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "newton.h"
 #include "methods.h"
 #include "utils.h"
@@ -68,3 +69,16 @@ void newtonGS(sl* linSys) {
     }
 }
 
+sl* copySl(sl* linSys){
+    sl* new = slConstructor(linSys->f->strFunc);
+    new->d = linSys->d;
+    new->eps = linSys->eps;
+    new->maxIter = linSys->maxIter;
+    memcpy(new->deltai, linSys->deltai, sizeof(double) * linSys->d);
+    memcpy(new->Gi, linSys->Gi, sizeof(double) * linSys->d);
+    memcpy(new->Hi[0], linSys->Hi[0], sizeof(double) * linSys->d * linSys->d);
+    memcpy(new->nGi, linSys->nGi, sizeof(double) * linSys->d);
+    memcpy(new->Xi, linSys->Xi, sizeof(double) * linSys->d);
+
+    return new;
+}

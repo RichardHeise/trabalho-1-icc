@@ -17,8 +17,10 @@ typedef struct S_SL {
 
 sl* slConstructor(char* func);
 
-void slDestructor(sl* sisLin);
+void slDestructor(sl* linSys);
 
-void newtonDefault(sl* sisLin);
+void newtonDefault(sl* linSys);
+
+sl* copySl(sl* linSys);
 
 #endif 
