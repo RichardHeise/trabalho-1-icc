@@ -55,6 +55,7 @@ void newtonGS(sl* linSys) {
     for (int i = 0; i < linSys->maxIter; i++) {
         calcGradient(linSys);
 
+        // here we have x
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
@@ -64,6 +65,7 @@ void newtonGS(sl* linSys) {
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
         
+        // here x+1 has been calculated
         if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
             return;
     }
