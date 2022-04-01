@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <matheval.h>
-#include "utils.h"
 #include <string.h>
+#include <math.h>
+#include "utils.h"
 #include "methods.h"
 #include "mathLib.h"
 #include "newton.h"
@@ -13,13 +14,12 @@ int main(int argc, char** argv){
   parseArgs(argc, argv, "o:h", &output);
   char* buffer;
   sl* linSys;
-  sl* linSys2;
   int validBuffer;
   int processSl;
   for(; !feof(stdin); ){
     validBuffer = fscanf(stdin, "%ms", &buffer) > 0;
     processSl = validBuffer;
-    for(int i = 0; i < 4 && validBuffer; i++){
+    for(int i = 0; i < 5 && validBuffer; i++){
       double num;
       char* p;
       unsigned int pos;
@@ -36,6 +36,7 @@ int main(int argc, char** argv){
           p = buffer;
           while(k < linSys->d && (sscanf(p, "%lf %n", &num, &pos) > 0 && p[0])) {
             linSys->Xi[k] = num;
+            linSys->Xinit[k] = num;
             p += pos;
             k++;
           }
@@ -45,6 +46,7 @@ int main(int argc, char** argv){
           break;
         case 4:
           linSys->maxIter = atoi(buffer);
+          linSys->out = outputConstructor(linSys->maxIter);
           break;
         case 0:
         default:
@@ -57,30 +59,49 @@ int main(int argc, char** argv){
     
     free(buffer);
     if(processSl){
-      linSys2 = copySl(linSys);
 
       newtonDefault(linSys);
 
-      fprintf(output, "%.8s: %1.14e\n", linSys->f->strFunc, evaluator_evaluate(
-        linSys->f->f,
-        linSys->d,
-        linSys->f->vars->variables,
-        linSys->Xi
-      ));
+      resetSl(linSys);
+      newtonGS(linSys);
 
-      newtonGS(linSys2);
+      fprintf(output, "%d\n", linSys->d);
+      fprintf(output, "%s\n", linSys->f->strFunc);
+      fprintf(output, "Iteração \t| Newton Padrão \t| Newton Modificado \t| Newton Inexato\n");
+      for(int i = 0; i < linSys->maxIter + 1; i++){
+        if(linSys->out->newtonInexact <= i && linSys->out->newtonExact <= i)
+          break;
+        fprintf(output,"%d \t\t| ", i);
+        double** mat = linSys->out->output;
 
-      fprintf(output, "%.8s: %1.14e\n", linSys2->f->strFunc, evaluator_evaluate(
-        linSys2->f->f,
-        linSys2->d,
-        linSys2->f->vars->variables,
-        linSys2->Xi
-      ));
+        if(linSys->out->newtonExact > i){
+          double value = mat[NEWTON_EXACT][i];
+          if(isnan(value) || isinf(value))
+            fprintf(output, "%1.14e\t\t\t| ", value);
+          else 
+            fprintf(output, "%1.14e\t| ", value);
+        }
+        else
+          fprintf(output, "\t\t\t| ");
+
+        fprintf(output, "\t\t\t| ");
+
+        if(linSys->out->newtonInexact > i){
+          double value = mat[NEWTON_INEXACT][i];
+          if(isnan(value) || isinf(value))
+            fprintf(output, "%1.14e\t\t\t ", value);
+          else 
+            fprintf(output, "%1.14e\t ", value);
+        }
+        else
+          fprintf(output, "\t\t\t ");
+
+        fprintf(output, "\n");
+      }
 
       printf("\n");
 
       slDestructor(linSys);
-      slDestructor(linSys2);
     }
     
   }
