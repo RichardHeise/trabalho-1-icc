@@ -114,3 +114,41 @@ double norm(double* v, unsigned int n) {
 int notEndLine(char* buffer){
   return buffer[0] != '\n';
 }
+
+void printOutput(FILE* output, sl* linSys) {
+  fprintf(output, "%d\n", linSys->d);
+  fprintf(output, "%s\n", linSys->f->strFunc);
+  fprintf(output, "Iteração \t| Newton Padrão \t| Newton Modificado \t| Newton Inexato\n");
+  for(int i = 0; i < linSys->maxIter + 1; i++){
+    if(linSys->out->newtonInexact <= i && linSys->out->newtonExact <= i)
+      break;
+    fprintf(output,"%d \t\t| ", i);
+    double** mat = linSys->out->output;
+
+    if(linSys->out->newtonExact > i){
+      double value = mat[NEWTON_EXACT][i];
+      if(isnan(value) || isinf(value))
+        fprintf(output, "%1.14e\t\t\t| ", value);
+      else 
+        fprintf(output, "%1.14e\t| ", value);
+    }
+    else
+      fprintf(output, "\t\t\t| ");
+
+    fprintf(output, "\t\t\t| ");
+
+    if(linSys->out->newtonInexact > i){
+      double value = mat[NEWTON_INEXACT][i];
+      if(isnan(value) || isinf(value))
+        fprintf(output, "%1.14e\t\t\t ", value);
+      else 
+        fprintf(output, "%1.14e\t ", value);
+    }
+    else
+      fprintf(output, "\t\t\t ");
+
+    fprintf(output, "\n");
+  }
+
+  printf("\n");
+}

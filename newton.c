@@ -141,3 +141,42 @@ sl* copySl(sl* linSys){
 void resetSl(sl* linSys){
     memcpy(linSys->Xi, linSys->Xinit, sizeof(double) * linSys->d);
 }
+
+void newtonMod(sl* linSys) {
+    int i;
+
+    // linSys->out->output[NEWTON_LU][0] = evaluator_evaluate(
+    //     linSys->f->f,
+    //     linSys->d,
+    //     linSys->f->vars->variables,
+    //     linSys->Xi
+    // );
+
+
+    for (i = 0; i < linSys->maxIter; i++) {
+        calcGradient(linSys);
+
+        // here we have x
+        if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
+            break;
+
+        calcHessiana(linSys);   
+        factLU(linSys); 
+
+        for (int j = 0; j < linSys->d; j++)
+            linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
+
+        // linSys->out->output[NEWTON_LU][i + 1] = evaluator_evaluate(
+        //     linSys->f->f,
+        //     linSys->d,
+        //     linSys->f->vars->variables,
+        //     linSys->Xi
+        // );
+        
+        // here x+1 has been calculated
+        if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
+            break;
+    }
+
+    // linSys->out->newtonInexact = i + 1;
+}

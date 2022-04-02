@@ -9,6 +9,27 @@
 
 #include "newton.h"
 
+typedef struct S_LU {
+    int n; /* dimensão da matriz */
+    double **L; /* matriz L da decomposição LU */
+    double **U; /* matriz U da decomposição LU */
+    double *y; /* vetor de resolucao */
+    int *trocas; /* vetor de índices das linhas após trocas efetuadas */
+                    /* pelo pivoteamento parcial na decomposição LU */
+} LU;
+
+/* Efetua a decomposição LU da matriz M,
+ guardando as trocas de linhas no pivoteamento */
+void decompLU(LU* sysLU);
+
+LU* luConstructor(sl* sysLin);
+
+/*Resolve o sistema Ly = b aplicando as devidas trocas em b*/
+void resolve_Ly_b(LU *sysLU, sl* linSys);
+
+/*Resolve o sistema Ux = y*/
+void resolve_Ux_y(LU *sysLU, sl* linSys);
+
 /**
  * Recebe double** A
  * Recebe double* b
@@ -43,5 +64,13 @@ void solveSL(sl* linSys);
 void newtonGS(sl* linSys);
 
 void gaussSeidel (sl* linSys);
+
+void luDestructor(LU* sysLU);
+
+void switchLinesInt(double** A, int* b, int i, int pivot, int n);
+
+void showMatrixInt(double** A, int *b, int n);
+
+void factLU(sl* linSys);
 
 #endif

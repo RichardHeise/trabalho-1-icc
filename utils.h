@@ -7,8 +7,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include<time.h>
+#include <time.h>
 #include <stdio.h>
+#include "newton.h"
 
 /**
  * Recebe int size
@@ -42,5 +43,7 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO);
 double norm(double* vector, unsigned int n);
 
 int notEndLine(char* buffer);
+
+void printOutput(FILE* output, sl* linSys);
 
 #endif

@@ -7,6 +7,7 @@
 #define NEWTON_EXACT 0
 #define NEWTON_INEXACT 1
 #define NEWTON_LU 2
+#define BLOCK_SIZE 5
 
 typedef struct S_OUTPUT{
     double** output;
@@ -39,5 +40,9 @@ void resetSl(sl* linSys);
 sl* copySl(sl* linSys);
 
 output* outputConstructor(int maxIter);
+
+void newtonMod(sl* linSys);
+
+void newtonGS(sl* linSys);
 
 #endif 

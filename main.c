@@ -8,18 +8,19 @@
 #include "mathLib.h"
 #include "newton.h"
 
+
 int main(int argc, char** argv){
   FILE* output = NULL;
 
   parseArgs(argc, argv, "o:h", &output);
-  char* buffer;
   sl* linSys;
   int validBuffer;
   int processSl;
+  char* buffer;
   for(; !feof(stdin); ){
     validBuffer = fscanf(stdin, "%ms", &buffer) > 0;
     processSl = validBuffer;
-    for(int i = 0; i < 5 && validBuffer; i++){
+    for(int i = 0; i < BLOCK_SIZE && validBuffer; i++){
       double num;
       char* p;
       unsigned int pos;
@@ -60,46 +61,22 @@ int main(int argc, char** argv){
     free(buffer);
     if(processSl){
 
-      newtonDefault(linSys);
+      
+      newtonMod(linSys);
 
-      resetSl(linSys);
-      newtonGS(linSys);
+      printf("Valor aplicado:%1.14e \n", evaluator_evaluate(
+        linSys->f->f, 
+        linSys->d, 
+        linSys->f->vars->variables, 
+        linSys->Xi
+      ));
 
-      fprintf(output, "%d\n", linSys->d);
-      fprintf(output, "%s\n", linSys->f->strFunc);
-      fprintf(output, "Iteração \t| Newton Padrão \t| Newton Modificado \t| Newton Inexato\n");
-      for(int i = 0; i < linSys->maxIter + 1; i++){
-        if(linSys->out->newtonInexact <= i && linSys->out->newtonExact <= i)
-          break;
-        fprintf(output,"%d \t\t| ", i);
-        double** mat = linSys->out->output;
+      // newtonDefault(linSys);
 
-        if(linSys->out->newtonExact > i){
-          double value = mat[NEWTON_EXACT][i];
-          if(isnan(value) || isinf(value))
-            fprintf(output, "%1.14e\t\t\t| ", value);
-          else 
-            fprintf(output, "%1.14e\t| ", value);
-        }
-        else
-          fprintf(output, "\t\t\t| ");
+      // resetSl(linSys);
+      // newtonGS(linSys);
 
-        fprintf(output, "\t\t\t| ");
-
-        if(linSys->out->newtonInexact > i){
-          double value = mat[NEWTON_INEXACT][i];
-          if(isnan(value) || isinf(value))
-            fprintf(output, "%1.14e\t\t\t ", value);
-          else 
-            fprintf(output, "%1.14e\t ", value);
-        }
-        else
-          fprintf(output, "\t\t\t ");
-
-        fprintf(output, "\n");
-      }
-
-      printf("\n");
+      // printOutput(output, linSys);
 
       slDestructor(linSys);
     }
@@ -108,3 +85,4 @@ int main(int argc, char** argv){
 
   return 0;
 }
+
