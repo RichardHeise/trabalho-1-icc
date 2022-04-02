@@ -8,9 +8,10 @@
 output* outputConstructor(int maxIter){
     output* out = mallocCheck(sizeof(output), "allocating output structure");
     out->output = (double**) mallocMatrix(NUM_METHODS, maxIter + 1, sizeof(double));
-    out->newtonExact = maxIter + 1;
-    out->newtonInexact = maxIter + 1;
-    
+    out->newtonExact = 0;
+    out->newtonInexact = 0;
+    out->newtonLU = 0;
+
     return out;
 }
 
@@ -49,21 +50,58 @@ void slDestructor(sl* linSys) {
     free(linSys);
 }
 
-void newtonDefault(sl* linSys) {
-    int i;
+void handleSlInit(sl** linSys, int i, char* buffer){
+  double num;
+  int pos;
+  char* p;
+  int k = 0;
+  
+  switch (i){
+        case 1:
+          (*linSys) = slConstructor(buffer);
+          break;
+        case 2:
+          p = buffer;
+          while(k < (*linSys)->d && (sscanf(p, "%lf %n", &num, &pos) > 0 && p[0])) {
+            (*linSys)->Xi[k] = num;
+            (*linSys)->Xinit[k] = num;
+            p += pos;
+            k++;
+          }
+          break;
+        case 3:
+          (*linSys)->eps = strtod(buffer, NULL);
+          break;
+        case 4:
+          (*linSys)->maxIter = atoi(buffer);
+          (*linSys)->out = outputConstructor((*linSys)->maxIter);
+          break;
+        case 0:
+        default:
+          break;
+      }
+}
 
-    linSys->out->output[NEWTON_EXACT][0] = evaluator_evaluate(
+void registerValue(sl* linSys, int i, int j){
+    linSys->out->output[i][j] = evaluator_evaluate(
         linSys->f->f,
         linSys->d,
         linSys->f->vars->variables,
         linSys->Xi
     );
+}
+
+void newtonDefault(sl* linSys) {
+    int i;
+
+    registerValue(linSys, NEWTON_EXACT, 0);
+    linSys->out->newtonExact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
         calcGradient(linSys);
 
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
-            break;
+            return;
 
         calcHessiana(linSys);   
         solveSL(linSys);
@@ -71,37 +109,25 @@ void newtonDefault(sl* linSys) {
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
         
-        linSys->out->output[NEWTON_EXACT][i + 1] = evaluator_evaluate(
-            linSys->f->f,
-            linSys->d,
-            linSys->f->vars->variables,
-            linSys->Xi
-        );
+        registerValue(linSys, NEWTON_EXACT, linSys->out->newtonExact++);
 
         if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
-            break;
+            return;
     }
-
-    linSys->out->newtonExact = i + 1;
 }
 
 void newtonGS(sl* linSys) {
     int i;
 
-    linSys->out->output[NEWTON_INEXACT][0] = evaluator_evaluate(
-        linSys->f->f,
-        linSys->d,
-        linSys->f->vars->variables,
-        linSys->Xi
-    );
-
+    registerValue(linSys, NEWTON_INEXACT, 0);
+    linSys->out->newtonInexact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
         calcGradient(linSys);
 
         // here we have x
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
-            break;
+            return;
 
         calcHessiana(linSys);   
         gaussSeidel(linSys); 
@@ -109,19 +135,48 @@ void newtonGS(sl* linSys) {
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
 
-        linSys->out->output[NEWTON_INEXACT][i + 1] = evaluator_evaluate(
-            linSys->f->f,
-            linSys->d,
-            linSys->f->vars->variables,
-            linSys->Xi
-        );
+        registerValue(linSys, NEWTON_INEXACT, linSys->out->newtonInexact++);
         
         // here x+1 has been calculated
         if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
-            break;
+            return;
     }
 
-    linSys->out->newtonInexact = i + 1;
+
+}
+
+void newtonMod(sl* linSys) {
+    int i;
+    
+    registerValue(linSys, NEWTON_LU, 0);
+    linSys->out->newtonLU = 1;
+
+    LU* sysLU;
+    sysLU = luConstructor(linSys);
+    for (i = 0; i < linSys->maxIter; i++) {
+        calcGradient(linSys);
+
+        // here we have x
+        if ( norm(linSys->Gi, linSys->d) < linSys->eps )
+            return;
+        
+        if ( !(i % linSys->d) ) {
+            calcHessiana(linSys);  
+            decompLU(sysLU); 
+        }
+        factLU(linSys, sysLU);
+
+        for (int j = 0; j < linSys->d; j++)
+            linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
+
+        registerValue(linSys, NEWTON_LU, linSys->out->newtonLU++);
+        
+        // here x+1 has been calculated
+        if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
+            return;
+    }
+
+    luDestructor(sysLU);
 }
 
 sl* copySl(sl* linSys){
@@ -140,50 +195,4 @@ sl* copySl(sl* linSys){
 
 void resetSl(sl* linSys){
     memcpy(linSys->Xi, linSys->Xinit, sizeof(double) * linSys->d);
-}
-
-void newtonMod(sl* linSys) {
-    int i;
-
-    // linSys->out->output[NEWTON_LU][0] = evaluator_evaluate(
-    //     linSys->f->f,
-    //     linSys->d,
-    //     linSys->f->vars->variables,
-    //     linSys->Xi
-    // );
-
-    LU* sysLU;
-    sysLU = luConstructor(linSys);
-    for (i = 0; i < linSys->maxIter; i++) {
-        calcGradient(linSys);
-
-        // here we have x
-        if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
-            break;
-        
-        if ( !(i % linSys->d) ) {
-            calcHessiana(linSys);  
-            decompLU(sysLU); 
-        }
-        factLU(linSys, sysLU);
-
-        
-
-        for (int j = 0; j < linSys->d; j++)
-            linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
-
-        // linSys->out->output[NEWTON_LU][i + 1] = evaluator_evaluate(
-        //     linSys->f->f,
-        //     linSys->d,
-        //     linSys->f->vars->variables,
-        //     linSys->Xi
-        // );
-        
-        // here x+1 has been calculated
-        if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
-            break;
-    }
-
-    luDestructor(sysLU);
-    // linSys->out->newtonInexact = i + 1;
 }

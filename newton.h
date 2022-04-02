@@ -3,7 +3,7 @@
 
 #include "mathLib.h"
 
-#define NUM_METHODS 2
+#define NUM_METHODS 3
 #define NEWTON_EXACT 0
 #define NEWTON_INEXACT 1
 #define NEWTON_LU 2
@@ -13,6 +13,7 @@ typedef struct S_OUTPUT{
     double** output;
     int newtonExact;
     int newtonInexact;
+    int newtonLU;
 }output;
 
 typedef struct S_SL {
@@ -44,5 +45,7 @@ output* outputConstructor(int maxIter);
 void newtonMod(sl* linSys);
 
 void newtonGS(sl* linSys);
+
+void handleSlInit(sl** linSys, int i, char* buffer);
 
 #endif 

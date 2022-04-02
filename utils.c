@@ -118,9 +118,15 @@ int notEndLine(char* buffer){
 void printOutput(FILE* output, sl* linSys) {
   fprintf(output, "%d\n", linSys->d);
   fprintf(output, "%s\n", linSys->f->strFunc);
+  fprintf(output, "#\n");
   fprintf(output, "Iteração \t| Newton Padrão \t| Newton Modificado \t| Newton Inexato\n");
+
   for(int i = 0; i < linSys->maxIter + 1; i++){
-    if(linSys->out->newtonInexact <= i && linSys->out->newtonExact <= i)
+    if(
+      linSys->out->newtonInexact <= i 
+      && linSys->out->newtonLU <= i 
+      && linSys->out->newtonExact <= i
+    )
       break;
     fprintf(output,"%d \t\t| ", i);
     double** mat = linSys->out->output;
@@ -135,7 +141,15 @@ void printOutput(FILE* output, sl* linSys) {
     else
       fprintf(output, "\t\t\t| ");
 
-    fprintf(output, "\t\t\t| ");
+    if(linSys->out->newtonLU > i){
+      double value = mat[NEWTON_LU][i];
+      if(isnan(value) || isinf(value))
+        fprintf(output, "%1.14e\t\t\t| ", value);
+      else 
+        fprintf(output, "%1.14e\t| ", value);
+    }
+    else
+      fprintf(output, "\t\t\t| ");
 
     if(linSys->out->newtonInexact > i){
       double value = mat[NEWTON_INEXACT][i];
@@ -149,6 +163,6 @@ void printOutput(FILE* output, sl* linSys) {
 
     fprintf(output, "\n");
   }
-
-  printf("\n");
+  fprintf(output, "#\n");
+  fprintf(output, "\n");
 }

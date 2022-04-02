@@ -22,6 +22,9 @@ newtonPC: $(OBJ)
 run: all
 	./newtonPC < $(INPUT)
 
+runOutput: all
+	./newtonPC < $(INPUT) -o saida.txt
+
 valgrind: all
 	valgrind ./newtonPC < $(INPUT)
 
