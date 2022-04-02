@@ -16,7 +16,7 @@
 int findMax(double** A, int i, int n){
   int index = i;
   for(int j = i + 1; j < n; j++){
-    if(A[j][i] > index)
+    if(A[j][i] > A[index][i])
       index = j;
   }
   return index;
@@ -173,7 +173,6 @@ LU* luConstructor(sl* sysLin) {
   sysLU->trocas = mallocCheck(sizeof(int) * n, "allocating memory for the index array.");
   sysLU->y = mallocCheck(sizeof(double) * n, "allocating memory for the y array.");
 
-  decompLU(sysLU);
   return sysLU;
 }
 
@@ -222,6 +221,7 @@ void elGaussLU(LU* sysLU){
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
       sysLU->L[k][i] = m;
+
       for(int j = i + 1; j < n; j++)
         A[k][j] -= m * A[i][j];
     }
@@ -230,14 +230,15 @@ void elGaussLU(LU* sysLU){
 
 void retroSubInf(LU* sysLU, sl* linSys){
 
-  double** A = sysLU->U;
+  double** A = sysLU->L;
   double*  b = linSys->nGi;
   double*  x = sysLU->y;
   int      n = sysLU->n;
 
   for(int i = 0; i < n; i++){
     x[i] = b[sysLU->trocas[i]];
-    for(int j = i + 1; j < n; j++)
+
+    for(int j = 0; j < i; j++)
       x[i] -= A[i][j] * x[j];
     x[i] /= A[i][i];
   }
@@ -252,7 +253,8 @@ void retroSubSup(LU* sysLU, sl* linSys){
   int      n = sysLU->n;
 
   for(int i = n -1; i >= 0; i--){
-    x[i] = b[i];
+    x[i] = b[sysLU->trocas[i]];
+
     for(int j = i + 1; j < n; j++)
       x[i] -= A[i][j] * x[j];
     x[i] /= A[i][i];
@@ -272,10 +274,7 @@ void decompLU(LU* sysLU) {
   elGaussLU(sysLU);
 }
 
-void factLU(sl* linSys) {
-  LU* sysLU;
-  sysLU = luConstructor(linSys);
+void factLU(sl* linSys, LU* sysLU) {
   resolve_Ly_b(sysLU, linSys);
   resolve_Ux_y(sysLU, linSys);
-  luDestructor(sysLU);
 }

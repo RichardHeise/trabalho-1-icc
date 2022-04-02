@@ -71,6 +71,6 @@ void switchLinesInt(double** A, int* b, int i, int pivot, int n);
 
 void showMatrixInt(double** A, int *b, int n);
 
-void factLU(sl* linSys);
+void factLU(sl* linSys, LU* sysLU);
 
 #endif

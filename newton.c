@@ -152,16 +152,22 @@ void newtonMod(sl* linSys) {
     //     linSys->Xi
     // );
 
-
+    LU* sysLU;
+    sysLU = luConstructor(linSys);
     for (i = 0; i < linSys->maxIter; i++) {
         calcGradient(linSys);
 
         // here we have x
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             break;
+        
+        if ( !(i % linSys->d) ) {
+            calcHessiana(linSys);  
+            decompLU(sysLU); 
+        }
+        factLU(linSys, sysLU);
 
-        calcHessiana(linSys);   
-        factLU(linSys); 
+        
 
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
@@ -178,5 +184,6 @@ void newtonMod(sl* linSys) {
             break;
     }
 
+    luDestructor(sysLU);
     // linSys->out->newtonInexact = i + 1;
 }

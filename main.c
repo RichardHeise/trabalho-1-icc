@@ -61,7 +61,10 @@ int main(int argc, char** argv){
     free(buffer);
     if(processSl){
 
+      //newtonDefault(linSys);
       
+      //resetSl(linSys);
+
       newtonMod(linSys);
 
       printf("Valor aplicado:%1.14e \n", evaluator_evaluate(
@@ -71,7 +74,6 @@ int main(int argc, char** argv){
         linSys->Xi
       ));
 
-      // newtonDefault(linSys);
 
       // resetSl(linSys);
       // newtonGS(linSys);
