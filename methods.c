@@ -1,5 +1,5 @@
 /**
- *  Arquivo com as implementações dos métodos numéricos
+ *  This file contains the implementations of the numeric methods
  *  Gabriel Lüders (GRR20190172)
  *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/
@@ -38,7 +38,7 @@ void switchLines(double** A, double* b, int i, int pivot, int n){
 }
 
 /* ====================================================================================== */
-// arriba
+
 void elGauss(sl* linSys){
 
   double** A = linSys->Hi;
@@ -46,10 +46,12 @@ void elGauss(sl* linSys){
   int      n = linSys->d;
   
   for(int i = 0; i < n; i++){
+    // Partial pivoting
     int pivot = findMax(A, i, n);
     if(pivot != i)
       switchLines(A, b, i, pivot, n);
 
+    // Gauss elimination
     for(int k = i + 1; k < n; k++){
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
@@ -119,18 +121,19 @@ void solveSL(sl* linSys) {
 void gaussSeidel(sl* linSys) {
   int n = linSys->d;
   
+  // 0 in deltai array
   memset(linSys->deltai, 0, sizeof(double)*linSys->d);
   double **A = linSys->Hi;
   double *B = linSys->nGi;
   double *X = linSys->deltai;
-  double erro = 10e-6;
+  double error = 10e-6;
 
   int k, i, j;
-  double s, xk, norma, diff = 0;
-  norma=1.0+erro;
+  double s, xk, norm, diff = 0;
+  norm=1.0+error;
 
-  for (k=0; norma > erro; ++k) {
-    norma = 0.0;
+  for (k=0; norm > error; ++k) {
+    norm = 0.0;
 
     for (i=0; i < n; ++i) {
       for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
@@ -140,7 +143,7 @@ void gaussSeidel(sl* linSys) {
       xk = (B[i] - s) / A[i][i];
       diff = fabs(xk - X[i]);
 
-      if (diff > norma) norma = diff;
+      if (diff > norm) norm = diff;
       X[i] = xk;
     }
   }
@@ -154,7 +157,7 @@ LU* luConstructor(sl* sysLin) {
   int n = sysLU->n = sysLin->d;
   sysLU->L = (double**) mallocMatrix(n, n, sizeof(double));
   sysLU->U = sysLin->Hi;
-  sysLU->trocas = mallocCheck(sizeof(int) * n, "allocating memory for the index array.");
+  sysLU->swap = mallocCheck(sizeof(int) * n, "allocating memory for the index array.");
   sysLU->y = mallocCheck(sizeof(double) * n, "allocating memory for the y array.");
 
   return sysLU;
@@ -164,7 +167,7 @@ LU* luConstructor(sl* sysLin) {
 
 void luDestructor(LU* sysLU) {
     matrixDestructor((void**) sysLU->L);
-    free(sysLU->trocas);
+    free(sysLU->swap);
     free(sysLU->y);
     free(sysLU);
 }
@@ -193,7 +196,7 @@ void resolve_Ly_b(LU *sysLU, sl* linSys) {
   int      n = sysLU->n;
 
   for(int i = 0; i < n; i++){
-    x[i] = b[sysLU->trocas[i]];
+    x[i] = b[sysLU->swap[i]];
 
     for(int j = 0; j < i; j++)
       x[i] -= A[i][j] * x[j];
@@ -210,7 +213,7 @@ void resolve_Ux_y(LU *sysLU, sl* linSys) {
   int      n = sysLU->n;
 
   for(int i = n -1; i >= 0; i--){
-    x[i] = b[sysLU->trocas[i]];
+    x[i] = b[sysLU->swap[i]];
 
     for(int j = i + 1; j < n; j++)
       x[i] -= A[i][j] * x[j];
@@ -222,11 +225,13 @@ void resolve_Ux_y(LU *sysLU, sl* linSys) {
 
 void decompLU(LU* sysLU) {
   double** A = sysLU->U;
-  int*     b = sysLU->trocas;
+  int*     b = sysLU->swap;
   int      n = sysLU->n;
 
+  // Creates L matrix with 1's in main diagonal
   for (int i = 0; i < n; i++) {
-    sysLU->trocas[i] = i;
+    // Indexes swap array
+    sysLU->swap[i] = i;
 
     for (int j = 0; j < n; j++) {
       sysLU->L[i][j] = 0;
@@ -235,6 +240,7 @@ void decompLU(LU* sysLU) {
     sysLU->L[i][i] = 1;
   }
   
+  // Gauss elimination with partial pivoting
   for(int i = 0; i < n; i++){
     int pivot = findMax(A, i, n);
     if(pivot != i)

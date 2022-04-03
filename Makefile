@@ -1,11 +1,10 @@
-#  @file  Makefile
-#  @brief Arquivo de configuração do Make
-#  @date 06/04/2022
-#  @author Gabriel Lüders (GRR20190172)
-#  @author Richard Fernando Heise Ferreira (GRR20191053) 
+#  Makefile
+#  06/04/2022
+#  Gabriel Lüders (GRR20190172)
+#  Richard Fernando Heise Ferreira (GRR20191053) 
 
 # ----------------------------------------------------------------- #
-# Declaração das opções de compilação e alvos a serem compilados
+# Declaration of targets and compiling options
 CFLAGS = -Wall -g
 CC = gcc
 LIBS = -lm -lmatheval
@@ -13,7 +12,7 @@ OBJ = main.o newton.o mathLib.o utils.o methods.o
 INPUT = fornecido/funcoes.dat
 
 # ----------------------------------------------------------------- #
-# Declaração das diretrizes de compilação
+# Compilation directives
 all: newtonPC
 
 newtonPC: $(OBJ)
@@ -50,7 +49,7 @@ methods.o: methods.c methods.h
 	$(CC) -c methods.c $(CFLAGS)
 
 # ----------------------------------------------------------------- #
-# Diretrizes de limpeza
+# Cleaning directives
 clean:
 	$(RM) *.o
 

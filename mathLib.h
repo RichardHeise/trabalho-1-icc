@@ -24,38 +24,38 @@ typedef struct S_Function{
 
 /**
  * Receives char* func
- * Função para construir uma function no formato de mathEval
- * Retorna um ponteiro para function
+ * Function to build a function(type) in mathEval format
+ * Returns function*
  */
 function* functionConstructor(char* func);
 
 /**
  * Receives char* func
- * Função para destruir a function do formato de mathEval
+ * Function to destroy a function(type) in mathEval format
  */
 void functionDestructor(function *func);
 
 /**
  * Receives function* f
- * Função para resgatar as variáveis de uma function
+ * Function to print variables of function(type) f
  */
 void showVariables(function* f);
 
 /**
  * Receives function* f
- * Função para resgatar as derivadas de uma function
+ * Function to print derivatives of function(type) f
  */
 void showDerivatives(function* f);
 
 /**
  * Receives function* f
- * Função para resgatar uma function
+ * Function to print a function(type)
  */
 void showFunction(function* f);
 
 /**
  * Receives function* f
- * Função para resgatar uma function
+ * Function to print the Hessian of a function(type)
  */
 void showHessiana(function* f);
 

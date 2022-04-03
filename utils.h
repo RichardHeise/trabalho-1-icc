@@ -80,7 +80,7 @@ void showMatrixInt(double** A, int *b, int n);
  * Receives double** A
  * Receives double* b
  * Receives int n 
- * Prints a matrix with a doublee b array
+ * Prints a matrix with a double b array
  */
 void showMatrix(double** A, double *b, int n);
 

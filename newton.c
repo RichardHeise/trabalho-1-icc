@@ -1,3 +1,9 @@
+/**
+ *  This file contains the implementations of newton related methods
+ *  Gabriel Lüders (GRR20190172)
+ *  Richard Fernando Heise Ferreira (GRR20191053) 
+ **/
+
 #include <matheval.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,10 +21,14 @@ output* outputConstructor(int maxIter){
     return out;
 }
 
+/* ====================================================================================== */
+
 void outputDestructor(output* out){
     matrixDestructor((void**) out->output);
     free(out);
 }
+
+/* ====================================================================================== */
 
 sl* slConstructor(char* func) {
     sl* linSys = mallocCheck(sizeof(sl), "allocating memory for linear system."); 
@@ -38,6 +48,8 @@ sl* slConstructor(char* func) {
     return linSys;
 }
 
+/* ====================================================================================== */
+
 void slDestructor(sl* linSys) {
     functionDestructor(linSys->f);
     matrixDestructor((void**) linSys->Hi);
@@ -50,18 +62,21 @@ void slDestructor(sl* linSys) {
     free(linSys);
 }
 
+/* ====================================================================================== */
+
 void handleSlInit(sl** linSys, int i, char* buffer){
   double num;
   int pos;
   char* p;
   int k = 0;
   
+  // For each block line we do something different
   switch (i){
-        case 1:
+        case 1: // Reads function
           (*linSys) = slConstructor(buffer);
           break;
-        case 2:
-          p = buffer;
+        case 2: // Reads initial X values
+          p = buffer; 
           while(k < (*linSys)->d && (sscanf(p, "%lf %n", &num, &pos) > 0 && p[0])) {
             (*linSys)->Xi[k] = num;
             (*linSys)->Xinit[k] = num;
@@ -69,18 +84,20 @@ void handleSlInit(sl** linSys, int i, char* buffer){
             k++;
           }
           break;
-        case 3:
+        case 3: // Reads error
           (*linSys)->eps = strtod(buffer, NULL);
           break;
-        case 4:
+        case 4: // Reads max iterations
           (*linSys)->maxIter = atoi(buffer);
           (*linSys)->out = outputConstructor((*linSys)->maxIter);
           break;
-        case 0:
+        case 0: // Skip first line, we get variables from mathEval
         default:
           break;
       }
 }
+
+/* ====================================================================================== */
 
 void registerValue(sl* linSys, int i, int j){
     linSys->out->output[i][j] = evaluator_evaluate(
@@ -91,9 +108,12 @@ void registerValue(sl* linSys, int i, int j){
     );
 }
 
+/* ====================================================================================== */
+
 void newtonDefault(sl* linSys) {
     int i;
 
+    // Register output
     registerValue(linSys, NEWTON_EXACT, 0);
     linSys->out->newtonExact = 1;
 
@@ -116,6 +136,8 @@ void newtonDefault(sl* linSys) {
     }
 }
 
+/* ====================================================================================== */
+
 void newtonGS(sl* linSys) {
     int i;
 
@@ -125,7 +147,6 @@ void newtonGS(sl* linSys) {
     for (i = 0; i < linSys->maxIter; i++) {
         calcGradient(linSys);
 
-        // here we have x
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
@@ -137,13 +158,14 @@ void newtonGS(sl* linSys) {
 
         registerValue(linSys, NEWTON_INEXACT, linSys->out->newtonInexact++);
         
-        // here x+1 has been calculated
         if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
             return;
     }
 
 
 }
+
+/* ====================================================================================== */
 
 void newtonMod(sl* linSys) {
     int i;
@@ -156,10 +178,10 @@ void newtonMod(sl* linSys) {
     for (i = 0; i < linSys->maxIter; i++) {
         calcGradient(linSys);
 
-        // here we have x
         if ( norm(linSys->Gi, linSys->d) < linSys->eps )
             return;
         
+        // We calculate the Hessian each degree number times
         if ( !(i % linSys->d) ) {
             calcHessian(linSys);  
             decompLU(sysLU); 
@@ -171,13 +193,14 @@ void newtonMod(sl* linSys) {
 
         registerValue(linSys, NEWTON_LU, linSys->out->newtonLU++);
         
-        // here x+1 has been calculated
         if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
             return;
     }
 
     luDestructor(sysLU);
 }
+
+/* ====================================================================================== */
 
 sl* copySl(sl* linSys){
     sl* new = slConstructor(linSys->f->strFunc);
@@ -192,6 +215,8 @@ sl* copySl(sl* linSys){
 
     return new;
 }
+
+/* ====================================================================================== */
 
 void resetSl(sl* linSys){
     memcpy(linSys->Xi, linSys->Xinit, sizeof(double) * linSys->d);

@@ -1,5 +1,5 @@
 /**
- *  Arquivo com as implementações das funções de gerenciamento da mathEval
+ *  This file contains the implementations of the functions relaated to de mathEval lib
  *  Gabriel Lüders (GRR20190172)
  *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/

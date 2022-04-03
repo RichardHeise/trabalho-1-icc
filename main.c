@@ -1,3 +1,9 @@
+/**
+ *  This file contains the main function
+ *  Gabriel Lüders (GRR20190172)
+ *  Richard Fernando Heise Ferreira (GRR20191053) 
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <matheval.h>
@@ -40,8 +46,7 @@ int main(int argc, char** argv){
     free(buffer);
     if(processSl){
       // After a method is done, the linear system is reset
-      // and the next one is done
-
+      // and the next one is processed
       newtonDefault(linSys);
       resetSl(linSys);
 
@@ -49,7 +54,6 @@ int main(int argc, char** argv){
       resetSl(linSys);
 
       newtonGS(linSys);
-
 
       printOutput(output, linSys);
       slDestructor(linSys);
