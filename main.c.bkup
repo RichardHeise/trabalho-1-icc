@@ -22,7 +22,7 @@ int main(void){
   }
   printf("\n\n");
   showHessiana(sis_lin->f);
-  calcHessiana(sis_lin);
+  calcHessian(sis_lin);
   showMatrix(sis_lin->Hi, teste, 2);
   
   int n = 3;

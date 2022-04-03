@@ -103,7 +103,7 @@ void newtonDefault(sl* linSys) {
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        calcHessiana(linSys);   
+        calcHessian(linSys);   
         solveSL(linSys);
 
         for (int j = 0; j < linSys->d; j++)
@@ -129,7 +129,7 @@ void newtonGS(sl* linSys) {
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        calcHessiana(linSys);   
+        calcHessian(linSys);   
         gaussSeidel(linSys); 
 
         for (int j = 0; j < linSys->d; j++)
@@ -161,10 +161,10 @@ void newtonMod(sl* linSys) {
             return;
         
         if ( !(i % linSys->d) ) {
-            calcHessiana(linSys);  
+            calcHessian(linSys);  
             decompLU(sysLU); 
         }
-        factLU(linSys, sysLU);
+        solveLU(linSys, sysLU);
 
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];

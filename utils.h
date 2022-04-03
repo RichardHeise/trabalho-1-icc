@@ -1,5 +1,5 @@
 /**
- *  Arquivo com os cabeçalhos das funções de utils.c
+ *  This file contains the headers for the functions in utils.c
  *  Gabriel Lüders (GRR20190172)
  *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/
@@ -12,38 +12,76 @@
 #include "newton.h"
 
 /**
- * Recebe int size
- * Recebe char* error 
- * Função para conferir se uma matriz foi alocada
- * Retorna um ponteiro para uma região alocada
+ * Receives int size
+ * Receives char* error 
+ * Function to check and malloc an array
+ * Returns a pointer to a now allocated region
  */
 void* mallocCheck(int size, char* error);
 
 /**
- * Recebe int lin
- * Recebe int col
- * Função para alocar uma matriz na memória
- * Retorna uma matriz alocada dinamicamente
+ * Receives int lin
+ * Receives int col
+ * Function to malloc a matrix in memory
+ * Returns a dynamically allocated matrix
  */
 void** mallocMatrix(int lin, int col, unsigned int varSize);
 
 /**
- * Recebe double** mat
- * Função para destruir uma matriz
+ * Receives double** mat
+ * Function to destroy a matrix
  */
 void matrixDestructor(void** mat);
 
 /**
- * Retorna o tempo atual
+ * Returns current time
  */
 double timestamp(void);
 
+/**
+ * Receives int arc
+ * Receives char** argv
+ * Receives const char *args
+ * Receives FILE** valueO
+ * Parse possible arguments for the program 
+ */
 void parseArgs(int argc, char** argv, const char *args, FILE** valueO);
 
+/**
+ * Receives double* vector
+ * Receives unsigned int n
+ * Function to get a norm of an array
+ * Returns a double value
+ */ 
 double norm(double* vector, unsigned int n);
 
+/**
+ * Receives char* buffer
+ * Returns true if buffer is not a '\n'
+ */ 
 int notEndLine(char* buffer);
 
+/**
+ * Receives FILE* output
+ * Receives sl* linSys
+ * Function to print the output
+ */
 void printOutput(FILE* output, sl* linSys);
+
+/**
+ * Receives double** A
+ * Receives int* b
+ * Receives int n 
+ * Prints a matrix with a int b array
+ */
+void showMatrixInt(double** A, int *b, int n);
+
+/**
+ * Receives double** A
+ * Receives double* b
+ * Receives int n 
+ * Prints a matrix with a doublee b array
+ */
+void showMatrix(double** A, double *b, int n);
 
 #endif

@@ -41,21 +41,13 @@ void elGauss(sl* sysLin);
 /**
  * Recebe double** A
  * Recebe double* b
- * Recebe int n 
- * Mostra uma matriz na tela
- */
-void showMatrix(double** A, double *b, int n);
-
-/**
- * Recebe double** A
- * Recebe double* b
  * Recebe double* x
  * Recebe int n 
  * Realiza a retrosubstituição 
  */
 void retroSub(sl* sysLin);
 
-void calcHessiana(sl* sisLin);
+void calcHessian(sl* sisLin);
 
 void calcGradient(sl* sisLin);
 
@@ -69,8 +61,6 @@ void luDestructor(LU* sysLU);
 
 void switchLinesInt(double** A, int* b, int i, int pivot, int n);
 
-void showMatrixInt(double** A, int *b, int n);
-
-void factLU(sl* linSys, LU* sysLU);
+void solveLU(sl* linSys, LU* sysLU);
 
 #endif

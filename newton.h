@@ -14,7 +14,7 @@ typedef struct S_OUTPUT{
     int newtonExact;
     int newtonInexact;
     int newtonLU;
-}output;
+} output;
 
 typedef struct S_SL {
     function* f;
@@ -34,13 +34,13 @@ sl* slConstructor(char* func);
 
 void slDestructor(sl* linSys);
 
-void newtonDefault(sl* linSys);
-
 void resetSl(sl* linSys);
 
 sl* copySl(sl* linSys);
 
 output* outputConstructor(int maxIter);
+
+void newtonDefault(sl* linSys);
 
 void newtonMod(sl* linSys);
 

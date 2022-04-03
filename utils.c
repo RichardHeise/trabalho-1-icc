@@ -1,5 +1,5 @@
 /**
- *  Arquivo com as implementações de funções úteis em geral
+ *  This file contains the implementations of useful functions in general
  *  Gabriel Lüders (GRR20190172)
  *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/
@@ -101,6 +101,8 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO){
   }
 }
 
+/* ====================================================================================== */
+
 double norm(double* v, unsigned int n) {
   double max = fabs(v[0]);
   for (int i = 1; i < n; i++) {
@@ -111,9 +113,13 @@ double norm(double* v, unsigned int n) {
   return max;
 }
 
+/* ====================================================================================== */
+
 int notEndLine(char* buffer){
   return buffer[0] != '\n';
 }
+
+/* ====================================================================================== */
 
 void printOutput(FILE* output, sl* linSys) {
   fprintf(output, "%d\n", linSys->d);
@@ -165,4 +171,28 @@ void printOutput(FILE* output, sl* linSys) {
   }
   fprintf(output, "#\n");
   fprintf(output, "\n");
+}
+
+/* ====================================================================================== */
+
+void showMatrix(double** A, double *b, int n){
+  for(int i = 0; i < n; i++){
+    for(int j = 0; j < n; j++){
+      printf("%f ", A[i][j]);
+    }
+    printf("| %f\n", b[i]);
+  }
+  printf("\n");
+}
+
+/* ====================================================================================== */
+
+void showMatrixInt(double** A, int *b, int n){
+  for(int i = 0; i < n; i++){
+    for(int j = 0; j < n; j++){
+      printf("%f ", A[i][j]);
+    }
+    printf("| %d\n", b[i]);
+  }
+  printf("\n");
 }

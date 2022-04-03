@@ -79,33 +79,11 @@ void retroSub(sl* sysLin){
 
 /* ====================================================================================== */
 
-void showMatrix(double** A, double *b, int n){
-  for(int i = 0; i < n; i++){
-    for(int j = 0; j < n; j++){
-      printf("%f ", A[i][j]);
-    }
-    printf("| %f\n", b[i]);
-  }
-  printf("\n");
-}
-
-void showMatrixInt(double** A, int *b, int n){
-  for(int i = 0; i < n; i++){
-    for(int j = 0; j < n; j++){
-      printf("%f ", A[i][j]);
-    }
-    printf("| %d\n", b[i]);
-  }
-  printf("\n");
-}
-
-/* ====================================================================================== */
-
-void calcHessiana(sl* linSys) {
+void calcHessian(sl* linSys) {
   for (int i = 0; i < linSys->d; i++) {
     for (int j = 0; j < linSys->d; j++) {
       linSys->Hi[i][j] = evaluator_evaluate(
-        linSys->f->hessiana[i][j], 
+        linSys->f->hessian[i][j], 
         linSys->d, 
         linSys->f->vars->variables, 
         linSys->Xi
@@ -113,6 +91,8 @@ void calcHessiana(sl* linSys) {
     }
   }
 }
+
+/* ====================================================================================== */
 
 void calcGradient(sl* linSys) {
   for(int i = 0; i < linSys->d; i++){
@@ -127,10 +107,14 @@ void calcGradient(sl* linSys) {
   }
 }
 
+/* ====================================================================================== */
+
 void solveSL(sl* linSys) {
   elGauss(linSys);
   retroSub(linSys);
 }
+
+/* ====================================================================================== */
 
 void gaussSeidel(sl* linSys) {
   int n = linSys->d;
@@ -154,15 +138,15 @@ void gaussSeidel(sl* linSys) {
       for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
 
       xk = (B[i] - s) / A[i][i];
-
       diff = fabs(xk - X[i]);
 
       if (diff > norma) norma = diff;
-
       X[i] = xk;
     }
   }
 }
+
+/* ====================================================================================== */
 
 LU* luConstructor(sl* sysLin) {
   LU* sysLU = mallocCheck(sizeof(LU), "allocating memory for the LU system."); 
@@ -176,12 +160,16 @@ LU* luConstructor(sl* sysLin) {
   return sysLU;
 }
 
+/* ====================================================================================== */
+
 void luDestructor(LU* sysLU) {
     matrixDestructor((void**) sysLU->L);
     free(sysLU->trocas);
     free(sysLU->y);
     free(sysLU);
 }
+
+/* ====================================================================================== */
 
 void switchLinesInt(double** A, int* b, int i, int pivot, int n){
   double temp = b[i];
@@ -193,11 +181,46 @@ void switchLinesInt(double** A, int* b, int i, int pivot, int n){
     A[i][j] = A[pivot][j];
     A[pivot][j] = temp; 
   }
-
 }
 
-void elGaussLU(LU* sysLU){
+/* ====================================================================================== */
 
+void resolve_Ly_b(LU *sysLU, sl* linSys) {
+
+  double** A = sysLU->L;
+  double*  b = linSys->nGi;
+  double*  x = sysLU->y;
+  int      n = sysLU->n;
+
+  for(int i = 0; i < n; i++){
+    x[i] = b[sysLU->trocas[i]];
+
+    for(int j = 0; j < i; j++)
+      x[i] -= A[i][j] * x[j];
+    x[i] /= A[i][i];
+  }
+} 
+
+/* ====================================================================================== */
+
+void resolve_Ux_y(LU *sysLU, sl* linSys) {
+  double** A = sysLU->U;
+  double*  b = sysLU->y;
+  double*  x = linSys->deltai;
+  int      n = sysLU->n;
+
+  for(int i = n -1; i >= 0; i--){
+    x[i] = b[sysLU->trocas[i]];
+
+    for(int j = i + 1; j < n; j++)
+      x[i] -= A[i][j] * x[j];
+    x[i] /= A[i][i];
+  }
+}
+
+/* ====================================================================================== */
+
+void decompLU(LU* sysLU) {
   double** A = sysLU->U;
   int*     b = sysLU->trocas;
   int      n = sysLU->n;
@@ -228,53 +251,9 @@ void elGaussLU(LU* sysLU){
   }
 }
 
-void retroSubInf(LU* sysLU, sl* linSys){
+/* ====================================================================================== */
 
-  double** A = sysLU->L;
-  double*  b = linSys->nGi;
-  double*  x = sysLU->y;
-  int      n = sysLU->n;
-
-  for(int i = 0; i < n; i++){
-    x[i] = b[sysLU->trocas[i]];
-
-    for(int j = 0; j < i; j++)
-      x[i] -= A[i][j] * x[j];
-    x[i] /= A[i][i];
-  }
-
-}
-
-void retroSubSup(LU* sysLU, sl* linSys){
-
-  double** A = sysLU->U;
-  double*  b = sysLU->y;
-  double*  x = linSys->deltai;
-  int      n = sysLU->n;
-
-  for(int i = n -1; i >= 0; i--){
-    x[i] = b[sysLU->trocas[i]];
-
-    for(int j = i + 1; j < n; j++)
-      x[i] -= A[i][j] * x[j];
-    x[i] /= A[i][i];
-  }
-
-}
-
-void resolve_Ly_b(LU *sysLU, sl* linSys) {
-  retroSubInf(sysLU, linSys);
-} 
-
-void resolve_Ux_y(LU *sysLU, sl* linSys) {
-  retroSubSup(sysLU, linSys);
-}
-
-void decompLU(LU* sysLU) {
-  elGaussLU(sysLU);
-}
-
-void factLU(sl* linSys, LU* sysLU) {
+void solveLU(sl* linSys, LU* sysLU) {
   resolve_Ly_b(sysLU, linSys);
   resolve_Ux_y(sysLU, linSys);
 }

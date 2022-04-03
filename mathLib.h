@@ -1,5 +1,5 @@
 /**
- *  Arquivo com os cabeçalhos das funções de mathLib.c
+ *  This file contains the headers for the functions in mathLib.c
  *  Gabriel Lüders (GRR20190172)
  *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/
@@ -7,52 +7,56 @@
 #ifndef MATH_SNL_H
 #define MATH_SNL_H
 
-// Struct para guardar as variáveis da equação
+// Struct to store function variables
 typedef struct S_Variables{
   char** variables;
   int varAmount;
-}variables;
+} variables;
 
-// Struct para guardar o valor da função, da derivada e as variáveis da função
+// Struct to store a function 
 typedef struct S_Function{
-  void* f;
-  void** dfs;
-  variables* vars;
-  void*** hessiana;
-  char* strFunc;
-}function;
+  void* f; // Function 
+  void** dfs; // Derivativee of the function
+  variables* vars; // Variables
+  void*** hessian; 
+  char* strFunc; // String of the function
+} function;
 
 /**
- * Recebe char* func
+ * Receives char* func
  * Função para construir uma function no formato de mathEval
  * Retorna um ponteiro para function
  */
 function* functionConstructor(char* func);
 
 /**
- * Recebe char* func
+ * Receives char* func
  * Função para destruir a function do formato de mathEval
  */
 void functionDestructor(function *func);
 
 /**
- * Recebe function* f
+ * Receives function* f
  * Função para resgatar as variáveis de uma function
  */
 void showVariables(function* f);
 
 /**
- * Recebe function* f
+ * Receives function* f
  * Função para resgatar as derivadas de uma function
  */
 void showDerivatives(function* f);
 
 /**
- * Recebe function* f
+ * Receives function* f
  * Função para resgatar uma function
  */
 void showFunction(function* f);
 
+/**
+ * Receives function* f
+ * Função para resgatar uma function
+ */
 void showHessiana(function* f);
 
 #endif
