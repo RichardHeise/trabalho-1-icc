@@ -187,7 +187,7 @@ void newtonMod(sl* linSys) {
         calcGradient(linSys);
 
         if ( norm(linSys->Gi, linSys->d) < linSys->eps )
-            return;
+            break;
         
         // We calculate the Hessian each degree number times
         if ( !(i % linSys->d) ) {
@@ -204,7 +204,7 @@ void newtonMod(sl* linSys) {
         registerValue(linSys, NEWTON_LU, linSys->out->newtonLU++);
         
         if ( norm(linSys->deltai, linSys->d) < linSys->eps ) 
-            return;
+            break;
     }
 
     luDestructor(sysLU);
