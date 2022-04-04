@@ -21,7 +21,7 @@ typedef struct S_LU {
  * Receives LU* sysLU
  * Function to decompose the linear system in the LU system
  */
-void decompLU(LU* sysLU);
+void decompLU(LU* sysLU, char* funcName);
 
 /**
  * Receives LU* sysLU

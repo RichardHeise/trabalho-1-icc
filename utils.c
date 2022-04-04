@@ -21,6 +21,12 @@ void* mallocCheck(int size, char* error){
   return pointer;
 }
 
+void checkZeroDivision(double denominator, char* funcName){
+  if(denominator == 0){
+    fprintf(stderr, "There has been a try to divide by zero while resolving function %s\n", funcName);
+  }
+}
+
 /* ====================================================================================== */
 
 void** mallocMatrix(int lin, int col, unsigned int varSize){
@@ -58,7 +64,7 @@ FILE* openFile(char* path, char* mode){
     
   if(!file){
     fprintf(stderr, "Error opening %s\n", path);
-    exit(0);
+    exit(1);
   }
 
   return file;
@@ -93,7 +99,7 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO){
           "Usage: %s -o <output_file>\n", 
          argv[0]
         );
-        exit (1) ;
+        exit (3) ;
     }
 
     option = getopt(argc, argv, args);

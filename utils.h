@@ -84,4 +84,12 @@ void showMatrixInt(double** A, int *b, int n);
  */
 void showMatrix(double** A, double *b, int n);
 
+
+/**
+ * Receives int denominator
+ * Receives char* function name 
+ * checks if denominator is 0
+ */
+void checkZeroDivision(double denominator, char* funcName);
+
 #endif

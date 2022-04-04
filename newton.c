@@ -192,7 +192,7 @@ void newtonMod(sl* linSys) {
         // We calculate the Hessian each degree number times
         if ( !(i % linSys->d) ) {
             calcHessian(linSys);  
-            decompLU(sysLU); 
+            decompLU(sysLU, linSys->f->strFunc); 
         }
         linSys->out->system[NEWTON_LU] = timestamp(); 
         solveLU(linSys, sysLU);

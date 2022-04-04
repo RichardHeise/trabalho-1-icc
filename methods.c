@@ -53,6 +53,7 @@ void elGauss(sl* linSys){
 
     // Gauss elimination
     for(int k = i + 1; k < n; k++){
+      checkZeroDivision(A[i][i], linSys->f->strFunc);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
       for(int j = i + 1; j < n; j++)
@@ -64,17 +65,18 @@ void elGauss(sl* linSys){
 
 /* ====================================================================================== */
 
-void retroSub(sl* sysLin){
+void retroSub(sl* linSys){
 
-  double** A = sysLin->Hi;
-  double* b = sysLin->nGi;
-  double* x = sysLin->deltai;
-  int n = sysLin->d;
+  double** A = linSys->Hi;
+  double* b = linSys->nGi;
+  double* x = linSys->deltai;
+  int n = linSys->d;
 
   for(int i = n -1; i >= 0; i--){
     x[i] = b[i];
     for(int j = i + 1; j < n; j++)
       x[i] -= A[i][j] * x[j];
+    checkZeroDivision(A[i][i], linSys->f->strFunc);
     x[i] /= A[i][i];
   }
 }
@@ -140,6 +142,7 @@ void gaussSeidel(sl* linSys) {
 
       for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
 
+      checkZeroDivision(A[i][i], linSys->f->strFunc);
       xk = (B[i] - s) / A[i][i];
       diff = fabs(xk - X[i]);
 
@@ -200,6 +203,7 @@ void resolve_Ly_b(LU *sysLU, sl* linSys) {
 
     for(int j = 0; j < i; j++)
       x[i] -= A[i][j] * x[j];
+    checkZeroDivision(A[i][i], linSys->f->strFunc);
     x[i] /= A[i][i];
   }
 } 
@@ -217,13 +221,14 @@ void resolve_Ux_y(LU *sysLU, sl* linSys) {
 
     for(int j = i + 1; j < n; j++)
       x[i] -= A[i][j] * x[j];
+    checkZeroDivision(A[i][i], linSys->f->strFunc);
     x[i] /= A[i][i];
   }
 }
 
 /* ====================================================================================== */
 
-void decompLU(LU* sysLU) {
+void decompLU(LU* sysLU, char* funcName) {
   double** A = sysLU->U;
   int*     b = sysLU->swap;
   int      n = sysLU->n;
@@ -247,6 +252,7 @@ void decompLU(LU* sysLU) {
       switchLinesInt(A, b, i, pivot, n);
 
     for(int k = i + 1; k < n; k++){
+      checkZeroDivision(A[i][i], funcName);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
       sysLU->L[k][i] = m;
