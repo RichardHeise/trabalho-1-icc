@@ -33,17 +33,23 @@ function* functionConstructor(char* func){
   f->f = getFunction(func);
   evaluator_get_variables(f->f, &f->vars->variables, &f->vars->varAmount); 
 
-  // dfs é o vetor de derivadas parciais, portanto, o gradiente :)
   f->dfs = mallocCheck(sizeof(void*) * f->vars->varAmount, "function derivatives");
   f->hessian = (void***) mallocMatrix(f->vars->varAmount, f->vars->varAmount, sizeof(void*));
+  f->derivativeTime = 0;;
 
-  // calcula dfs e hessiana em 2 fors
+
+  // Calculate Hessian and second derivatives
   for(int i = 0; i < f->vars->varAmount; i++){
     f->dfs[i] = evaluator_derivative(f->f, f->vars->variables[i]);
+  }
+
+  f->derivativeTime = timestamp();
+  for(int i = 0; i < f->vars->varAmount; i++){
     for (int j = 0; j < f->vars->varAmount; j++) {
       f->hessian[i][j] = evaluator_derivative(f->dfs[i], f->vars->variables[j]);
     }
-  } 
+  }
+  f->derivativeTime = timestamp() - f->derivativeTime;
 
   return f;
 }
@@ -102,4 +108,3 @@ void showhessian(function* f) {
   }
 }
 
-/* ====================================================================================== */

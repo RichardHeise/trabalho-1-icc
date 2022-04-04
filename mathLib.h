@@ -18,6 +18,7 @@ typedef struct S_Function{
   void* f; // Function 
   void** dfs; // Derivativee of the function
   variables* vars; // Variables
+  double derivativeTime; // Time to mathEval to calculate a derivative
   void*** hessian; 
   char* strFunc; // String of the function
 } function;

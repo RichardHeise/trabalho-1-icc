@@ -166,10 +166,10 @@ LU* luConstructor(sl* sysLin) {
 /* ====================================================================================== */
 
 void luDestructor(LU* sysLU) {
-    matrixDestructor((void**) sysLU->L);
-    free(sysLU->swap);
-    free(sysLU->y);
-    free(sysLU);
+  matrixDestructor((void**) sysLU->L);
+  free(sysLU->swap);
+  free(sysLU->y);
+  free(sysLU);
 }
 
 /* ====================================================================================== */

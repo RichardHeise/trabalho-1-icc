@@ -47,13 +47,19 @@ int main(int argc, char** argv){
     if(processSl){
       // After a method is done, the linear system is reset
       // and the next one is processed
+      linSys->out->total[NEWTON_EXACT] = timestamp();
       newtonDefault(linSys);
+      linSys->out->total[NEWTON_EXACT] = timestamp() - linSys->out->total[NEWTON_EXACT];
       resetSl(linSys);
 
+      linSys->out->total[NEWTON_LU] = timestamp();
       newtonMod(linSys);
+      linSys->out->total[NEWTON_LU] = timestamp() - linSys->out->total[NEWTON_LU];
       resetSl(linSys);
 
+      linSys->out->total[NEWTON_INEXACT] = timestamp();
       newtonGS(linSys);
+      linSys->out->total[NEWTON_INEXACT] = timestamp() - linSys->out->total[NEWTON_INEXACT];
 
       printOutput(output, linSys);
       slDestructor(linSys);

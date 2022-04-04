@@ -21,6 +21,8 @@ typedef struct S_OUTPUT{
     int newtonExact;
     int newtonInexact;
     int newtonLU;
+    double* total;
+    double* system;
 } output;
 
 //Struct to manage a linear system

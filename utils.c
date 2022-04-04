@@ -45,8 +45,7 @@ void matrixDestructor(void** mat){
 
 /* ====================================================================================== */
 
-double timestamp(void)
-{
+double timestamp(void) {
   struct timespec tp;
   clock_gettime(CLOCK_MONOTONIC_RAW, &tp);
   return((double)(tp.tv_sec*1.0e3 + tp.tv_nsec*1.0e-6));
@@ -169,6 +168,9 @@ void printOutput(FILE* output, sl* linSys) {
 
     fprintf(output, "\n");
   }
+  fprintf(output, "Tempo total \t| %1.14e \t| %1.14e \t| %1.14e\n", linSys->out->total[NEWTON_EXACT], linSys->out->total[NEWTON_LU], linSys->out->total[NEWTON_INEXACT]);
+  fprintf(output, "Tempo derivadas | %1.14e \t| %1.14e \t| %1.14e\n", linSys->f->derivativeTime, linSys->f->derivativeTime, linSys->f->derivativeTime);
+  fprintf(output, "Tempo SL \t| %1.14e \t| %1.14e \t| %1.14e\n", linSys->out->system[NEWTON_EXACT], linSys->out->system[NEWTON_LU], linSys->out->system[NEWTON_INEXACT]);
   fprintf(output, "#\n");
   fprintf(output, "\n");
 }

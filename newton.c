@@ -17,6 +17,8 @@ output* outputConstructor(int maxIter){
     out->newtonExact = 0;
     out->newtonInexact = 0;
     out->newtonLU = 0;
+    out->total = mallocCheck(sizeof(double) * NUM_METHODS, "allocating double total time array");
+    out->system = mallocCheck(sizeof(double) * NUM_METHODS, "allocating double linear system time array");
 
     return out;
 }
@@ -25,6 +27,8 @@ output* outputConstructor(int maxIter){
 
 void outputDestructor(output* out){
     matrixDestructor((void**) out->output);
+    free(out->total);
+    free(out->system);
     free(out);
 }
 
@@ -123,8 +127,10 @@ void newtonDefault(sl* linSys) {
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        calcHessian(linSys);   
+        calcHessian(linSys);
+        linSys->out->system[NEWTON_EXACT] = timestamp();   
         solveSL(linSys);
+        linSys->out->system[NEWTON_EXACT] = timestamp() - linSys->out->system[NEWTON_EXACT];
 
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
@@ -151,7 +157,9 @@ void newtonGS(sl* linSys) {
             return;
 
         calcHessian(linSys);   
+        linSys->out->system[NEWTON_INEXACT] = timestamp(); 
         gaussSeidel(linSys); 
+        linSys->out->system[NEWTON_INEXACT] = timestamp() - linSys->out->system[NEWTON_INEXACT]; 
 
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
@@ -186,7 +194,9 @@ void newtonMod(sl* linSys) {
             calcHessian(linSys);  
             decompLU(sysLU); 
         }
+        linSys->out->system[NEWTON_LU] = timestamp(); 
         solveLU(linSys, sysLU);
+        linSys->out->system[NEWTON_LU] = timestamp() - linSys->out->system[NEWTON_LU]; 
 
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
