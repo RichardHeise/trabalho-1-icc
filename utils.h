@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include "newton.h"
 
+#define OPENING_FILE_ERROR 2
+#define MEM_ALLOC_ERROR 3
+#define USAGE_ERROR 4
 /**
  * Receives int size
  * Receives char* error 

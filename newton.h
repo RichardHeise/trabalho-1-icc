@@ -17,12 +17,12 @@
 
 // Struct to manage the output format
 typedef struct S_OUTPUT{
-    double** output;
-    int newtonExact;
-    int newtonInexact;
-    int newtonLU;
-    double* total;
-    double* system;
+    double** output; // Result from each method
+    int newtonExact; // Number of iterations
+    int newtonInexact; // Number of iterations
+    int newtonLU; // Number of iterations
+    double* total; // Total time of a method
+    double* system; // Total time of a linear system
 } output;
 
 //Struct to manage a linear system

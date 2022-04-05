@@ -15,7 +15,7 @@ void* mallocCheck(int size, char* error){
   void* pointer = malloc(size);
   if(!pointer){
     fprintf(stderr, "Error allocating memory: %s\n", error);
-    exit(2);
+    exit(MEM_ALLOC_ERROR);
   }
 
   return pointer;
@@ -64,7 +64,7 @@ FILE* openFile(char* path, char* mode){
     
   if(!file){
     fprintf(stderr, "Error opening %s\n", path);
-    exit(1);
+    exit(OPENING_FILE_ERROR);
   }
 
   return file;
@@ -99,7 +99,7 @@ void parseArgs(int argc, char** argv, const char *args, FILE** valueO){
           "Usage: %s -o <output_file>\n", 
          argv[0]
         );
-        exit (3) ;
+        exit(USAGE_ERROR);
     }
 
     option = getopt(argc, argv, args);

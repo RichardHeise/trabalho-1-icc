@@ -7,6 +7,8 @@
 #ifndef MATH_SNL_H
 #define MATH_SNL_H
 
+#define ASSERTING_ERROR 1
+
 // Struct to store function variables
 typedef struct S_Variables{
   char** variables;
@@ -16,7 +18,7 @@ typedef struct S_Variables{
 // Struct to store a function 
 typedef struct S_Function{
   void* f; // Function 
-  void** dfs; // Derivativee of the function
+  void** dfs; // Derivative of the function
   variables* vars; // Variables
   double derivativeTime; // Time to mathEval to calculate a derivative
   void*** hessian; 

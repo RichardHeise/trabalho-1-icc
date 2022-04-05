@@ -1,5 +1,5 @@
 /**
- *  This file contains the implementations of the functions relaated to de mathEval lib
+ *  This file contains the implementations of the functions related to the mathEval lib
  *  Gabriel Lüders (GRR20190172)
  *  Richard Fernando Heise Ferreira (GRR20191053) 
  **/
@@ -15,7 +15,7 @@ void* getFunction(char* func){
   void* f = evaluator_create(func);
   if(!f) {
     fprintf(stderr, "Error asserting %s\n", func);
-    exit(1);
+    exit(ASSERTING_ERROR);
   }
 
   return f;
