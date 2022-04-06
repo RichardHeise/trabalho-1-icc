@@ -20,3 +20,6 @@ Novamente, o sistema é resetado e chamamos, finalmente, o último método que f
 
 Todos os resultados são guardados na estrutura _output_ do sistema linear e devidamente imprimidos na tela pela função `printOutput()`.
 
+# Considerações
+
+O método de newton exato, ou método padrão, encontra a resposta exata, enquanto os demais métodos encontram aproximações do valor exato, o que pode resultar, em alguns casos, na falta de convergência do valor. Notoriamente as 5 últimas entradas fornecidas pelos professores não convergem utilizando os métodos de newton modificado e inexato, assim como as próprias saídas forcenidas pelos professores também não convergem, contudo, é necessário reforçar que para a maioria das entradas as nossas saídas estão de acordo com o esperado dado o arquivo de saídas fornecido, ou seja, a princípio nossos métodos funcionam na mesma proporção que os utilizados pelo docentes. 
