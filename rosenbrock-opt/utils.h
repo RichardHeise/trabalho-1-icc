@@ -10,6 +10,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "newton.h"
+#include <likwid.h>
 
 #define OPENING_FILE_ERROR 2
 #define MEM_ALLOC_ERROR 3

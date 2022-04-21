@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <ctype.h>
+#include <likwid.h>
 #include "utils.h"
 
 void* mallocCheck(int size, char* error){

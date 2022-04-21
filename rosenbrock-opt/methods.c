@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <likwid.h>
 #include <matheval.h>
 #include <string.h>
 #include <math.h>

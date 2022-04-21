@@ -8,6 +8,7 @@
 #define NEWTON_H
 
 #include "mathLib.h"
+#include <likwid.h>
 
 #define NUM_METHODS 3
 #define NEWTON_EXACT 0

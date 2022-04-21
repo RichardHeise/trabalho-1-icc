@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <matheval.h>
 #include <string.h>
+#include <likwid.h>
 #include <math.h>
 #include "utils.h"
 #include "methods.h"

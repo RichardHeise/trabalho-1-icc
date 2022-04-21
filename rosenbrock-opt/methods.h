@@ -8,6 +8,7 @@
 #define METHODS_H
 
 #include "newton.h"
+#include <likwid.h>
 
 typedef struct S_LU {
     int n; // Size of matrix

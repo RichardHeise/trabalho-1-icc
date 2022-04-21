@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rosenbrock.h"
+#include <likwid.h>
 #include "newton.h"
 #include "methods.h"
 #include "utils.h"

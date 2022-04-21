@@ -2,6 +2,7 @@
 #define __ROSENBROCK__
 
 #include "rosenbrock.h"
+#include <likwid.h>
 
 /* Função Rosenbrock de dimensão n.
  * Devolve f(X)
