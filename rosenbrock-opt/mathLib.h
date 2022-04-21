@@ -9,19 +9,9 @@
 
 #define ASSERTING_ERROR 1
 
-// Struct to store function variables
-typedef struct S_Variables{
-  char** variables;
-  int varAmount;
-} variables;
-
 // Struct to store a function 
 typedef struct S_Function{
-  void* f; // Function 
-  void** dfs; // Derivative of the function
-  variables* vars; // Variables
   double derivativeTime; // Time to mathEval to calculate a derivative
-  void*** hessian; 
   char* strFunc; // String of the function
 } function;
 
@@ -37,29 +27,5 @@ function* functionConstructor(char* func);
  * Function to destroy a function(type) in mathEval format
  */
 void functionDestructor(function *func);
-
-/**
- * Receives function* f
- * Function to print variables of function(type) f
- */
-void showVariables(function* f);
-
-/**
- * Receives function* f
- * Function to print derivatives of function(type) f
- */
-void showDerivatives(function* f);
-
-/**
- * Receives function* f
- * Function to print a function(type)
- */
-void showFunction(function* f);
-
-/**
- * Receives function* f
- * Function to print the Hessian of a function(type)
- */
-void showHessiana(function* f);
 
 #endif

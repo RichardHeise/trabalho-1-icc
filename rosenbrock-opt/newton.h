@@ -45,7 +45,7 @@ typedef struct S_SL {
  * Function to build a linear system
  * Returns sl* 
  */ 
-sl* slConstructor(char* func);
+sl* slConstructor(char* func, int numVars);
 
 /**
  * Receives sl* linSys
@@ -97,6 +97,6 @@ void newtonGS(sl* linSys);
  * Receives char* buffer
  * Function to proccess the input
  */ 
-void handleSlInit(sl** linSys, int i, char* buffer);
+void handleSlInit(sl** linSys, int i, char* buffer, int* numVars);
 
 #endif 

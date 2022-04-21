@@ -130,7 +130,7 @@ void printOutput(FILE* output, sl* linSys) {
   fprintf(output, "%d\n", linSys->d);
   fprintf(output, "%s\n", linSys->f->strFunc);
   fprintf(output, "#\n");
-  fprintf(output, "Iteração \t| Newton Padrão \t| Newton Modificado \t| Newton Inexato\n");
+  fprintf(output, "Iteração \t| Newton Padrão \t| Newton Inexato\n");
 
   for(int i = 0; i < linSys->maxIter + 1; i++){
     if(
@@ -152,16 +152,6 @@ void printOutput(FILE* output, sl* linSys) {
     else
       fprintf(output, "\t\t\t| ");
 
-    if(linSys->out->newtonLU > i){
-      double value = mat[NEWTON_LU][i];
-      if(isnan(value) || isinf(value))
-        fprintf(output, "%1.14e\t\t\t| ", value);
-      else 
-        fprintf(output, "%1.14e\t| ", value);
-    }
-    else
-      fprintf(output, "\t\t\t| ");
-
     if(linSys->out->newtonInexact > i){
       double value = mat[NEWTON_INEXACT][i];
       if(isnan(value) || isinf(value))
@@ -174,9 +164,9 @@ void printOutput(FILE* output, sl* linSys) {
 
     fprintf(output, "\n");
   }
-  fprintf(output, "Tempo total \t| %1.14e \t| %1.14e \t| %1.14e\n", linSys->out->total[NEWTON_EXACT], linSys->out->total[NEWTON_LU], linSys->out->total[NEWTON_INEXACT]);
-  fprintf(output, "Tempo derivadas | %1.14e \t| %1.14e \t| %1.14e\n", linSys->f->derivativeTime, linSys->f->derivativeTime, linSys->f->derivativeTime);
-  fprintf(output, "Tempo SL \t| %1.14e \t| %1.14e \t| %1.14e\n", linSys->out->system[NEWTON_EXACT], linSys->out->system[NEWTON_LU], linSys->out->system[NEWTON_INEXACT]);
+  fprintf(output, "Tempo total \t| %1.14e \t| %1.14e\n", linSys->out->total[NEWTON_EXACT], linSys->out->total[NEWTON_INEXACT]);
+  fprintf(output, "Tempo derivadas | %1.14e \t| %1.14e\n", linSys->f->derivativeTime, linSys->f->derivativeTime);
+  fprintf(output, "Tempo SL \t| %1.14e \t| %1.14e\n", linSys->out->system[NEWTON_EXACT], linSys->out->system[NEWTON_INEXACT]);
   fprintf(output, "#\n");
   fprintf(output, "\n");
 }

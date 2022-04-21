@@ -9,6 +9,7 @@
 #include <matheval.h>
 #include <string.h>
 #include <math.h>
+#include "rosenbrock.h"
 #include "methods.h"
 #include "utils.h"
 #include "newton.h"
@@ -86,12 +87,7 @@ void retroSub(sl* linSys){
 void calcHessian(sl* linSys) {
   for (int i = 0; i < linSys->d; i++) {
     for (int j = 0; j < linSys->d; j++) {
-      linSys->Hi[i][j] = evaluator_evaluate(
-        linSys->f->hessian[i][j], 
-        linSys->d, 
-        linSys->f->vars->variables, 
-        linSys->Xi
-      );
+      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
     }
   }
 }
@@ -100,12 +96,7 @@ void calcHessian(sl* linSys) {
 
 void calcGradient(sl* linSys) {
   for(int i = 0; i < linSys->d; i++){
-    linSys->Gi[i] = evaluator_evaluate(
-      linSys->f->dfs[i],
-      linSys->d,
-      linSys->f->vars->variables,
-      linSys->Xi
-    );
+    linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
 
     linSys->nGi[i] = (-1*linSys->Gi[i]);
   }

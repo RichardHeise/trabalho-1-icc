@@ -28,7 +28,8 @@ int main(int argc, char** argv){
 
   // While we still reading
   for(; !feof(stdin); ){
-
+    
+    int numVars = 0;
     validBuffer = fscanf(stdin, "%ms", &buffer) > 0;
     processSl = validBuffer;
 
@@ -37,7 +38,7 @@ int main(int argc, char** argv){
       fgetc(stdin);
 
       // Handle possible lines in the block
-      handleSlInit(&linSys, i, buffer);
+      handleSlInit(&linSys, i, buffer, &numVars);
       
       free(buffer);
       validBuffer = fscanf(stdin, "%m[^\n]", &buffer) > 0;
@@ -50,11 +51,6 @@ int main(int argc, char** argv){
       linSys->out->total[NEWTON_EXACT] = timestamp();
       newtonDefault(linSys);
       linSys->out->total[NEWTON_EXACT] = timestamp() - linSys->out->total[NEWTON_EXACT];
-      resetSl(linSys);
-
-      linSys->out->total[NEWTON_LU] = timestamp();
-      newtonMod(linSys);
-      linSys->out->total[NEWTON_LU] = timestamp() - linSys->out->total[NEWTON_LU];
       resetSl(linSys);
 
       linSys->out->total[NEWTON_INEXACT] = timestamp();

@@ -8,8 +8,8 @@
 CFLAGS = -Wall -g
 CC = gcc
 LIBS = -lm -lmatheval
-OBJ = main.o newton.o mathLib.o utils.o methods.o
-INPUT = fornecido/funcoes.dat
+OBJ = main.o newton.o mathLib.o utils.o methods.o rosenbrock.o
+INPUT = entrada.dat
 
 # ----------------------------------------------------------------- #
 # Compilation directives
@@ -47,6 +47,9 @@ utils.o: utils.c utils.h
 
 methods.o: methods.c methods.h
 	$(CC) -c methods.c $(CFLAGS)
+
+rosenbrock.o: rosenbrock.c rosenbrock.h
+	$(CC) -c rosenbrock.c $(CFLAGS)
 
 # ----------------------------------------------------------------- #
 # Cleaning directives

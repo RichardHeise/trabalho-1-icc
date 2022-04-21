@@ -7,6 +7,7 @@
 #include <matheval.h>
 #include <stdlib.h>
 #include <string.h>
+#include "rosenbrock.h"
 #include "newton.h"
 #include "methods.h"
 #include "utils.h"
@@ -16,7 +17,6 @@ output* outputConstructor(int maxIter){
     out->output = (double**) mallocMatrix(NUM_METHODS, maxIter + 1, sizeof(double));
     out->newtonExact = 0;
     out->newtonInexact = 0;
-    out->newtonLU = 0;
     out->total = mallocCheck(sizeof(double) * NUM_METHODS, "allocating double total time array");
     out->system = mallocCheck(sizeof(double) * NUM_METHODS, "allocating double linear system time array");
 
@@ -34,10 +34,10 @@ void outputDestructor(output* out){
 
 /* ====================================================================================== */
 
-sl* slConstructor(char* func) {
+sl* slConstructor(char* func, int numVars) {
     sl* linSys = mallocCheck(sizeof(sl), "allocating memory for linear system."); 
     linSys->f = functionConstructor(func);
-    int n = linSys->f->vars->varAmount;
+    int n = numVars;
     
     linSys->eps = 0.000001;
     linSys->maxIter = 0;
@@ -68,7 +68,7 @@ void slDestructor(sl* linSys) {
 
 /* ====================================================================================== */
 
-void handleSlInit(sl** linSys, int i, char* buffer){
+void handleSlInit(sl** linSys, int i, char* buffer, int* numVars){
   double num;
   int pos;
   char* p;
@@ -76,8 +76,11 @@ void handleSlInit(sl** linSys, int i, char* buffer){
   
   // For each block line we do something different
   switch (i){
+        case 0:
+            *numVars = atoi(buffer);
+            break;
         case 1: // Reads function
-          (*linSys) = slConstructor(buffer);
+          (*linSys) = slConstructor(buffer, *numVars);
           break;
         case 2: // Reads initial X values
           p = buffer; 
@@ -95,7 +98,6 @@ void handleSlInit(sl** linSys, int i, char* buffer){
           (*linSys)->maxIter = atoi(buffer);
           (*linSys)->out = outputConstructor((*linSys)->maxIter);
           break;
-        case 0: // Skip first line, we get variables from mathEval
         default:
           break;
       }
@@ -104,12 +106,7 @@ void handleSlInit(sl** linSys, int i, char* buffer){
 /* ====================================================================================== */
 
 void registerValue(sl* linSys, int i, int j){
-    linSys->out->output[i][j] = evaluator_evaluate(
-        linSys->f->f,
-        linSys->d,
-        linSys->f->vars->variables,
-        linSys->Xi
-    );
+    linSys->out->output[i][j] = rosenbrock_f(linSys->Xi, linSys->d);
 }
 
 /* ====================================================================================== */
@@ -213,7 +210,7 @@ void newtonMod(sl* linSys) {
 /* ====================================================================================== */
 
 sl* copySl(sl* linSys){
-    sl* new = slConstructor(linSys->f->strFunc);
+    sl* new = slConstructor(linSys->f->strFunc, linSys->d);
     new->d = linSys->d;
     new->eps = linSys->eps;
     new->maxIter = linSys->maxIter;
