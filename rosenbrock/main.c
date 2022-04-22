@@ -9,12 +9,15 @@
 #include <matheval.h>
 #include <string.h>
 #include <math.h>
+#include <likwid.h>
 #include "utils.h"
 #include "methods.h"
 #include "mathLib.h"
 #include "newton.h"
 
 int main(int argc, char** argv){
+  LIKWID_MARKER_INIT;
+  
   // Pointer to output file
   FILE* output = NULL;
 
@@ -48,21 +51,21 @@ int main(int argc, char** argv){
     if(processSl){
       // After a method is done, the linear system is reset
       // and the next one is processed
-      linSys->out->total[NEWTON_EXACT] = timestamp();
+      char* name = markerName("newtonDefault", linSys->d);
+      LIKWID_MARKER_START(name);
       newtonDefault(linSys);
-      linSys->out->total[NEWTON_EXACT] = timestamp() - linSys->out->total[NEWTON_EXACT];
       resetSl(linSys);
+      LIKWID_MARKER_STOP(name);
+      free(name);
 
-      linSys->out->total[NEWTON_INEXACT] = timestamp();
       newtonGS(linSys);
-      linSys->out->total[NEWTON_INEXACT] = timestamp() - linSys->out->total[NEWTON_INEXACT];
 
-      printOutput(output, linSys);
       slDestructor(linSys);
     }
     
   }
 
+  LIKWID_MARKER_CLOSE;
   return 0;
 }
 

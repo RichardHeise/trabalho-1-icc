@@ -14,6 +14,13 @@
 #define OPENING_FILE_ERROR 2
 #define MEM_ALLOC_ERROR 3
 #define USAGE_ERROR 4
+
+// SIMD alignment macros
+#define ALIGN_64 __attribute__((aligned(64)))
+#define ALIGN_32 __attribute__((aligned(32)))
+#define ALIGN_16 __attribute__((aligned(16)))
+
+
 /**
  * Receives int size
  * Receives char* error 
@@ -94,5 +101,9 @@ void showMatrix(double** A, double *b, int n);
  * checks if denominator is 0
  */
 void checkZeroDivision(double denominator, char* funcName);
+
+char* markerName(char* baseName, int n);
+
+int isPot2 (int n);
 
 #endif

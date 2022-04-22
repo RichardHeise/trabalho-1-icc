@@ -194,3 +194,25 @@ void showMatrixInt(double** A, int *b, int n){
   }
   printf("\n");
 }
+
+/* ====================================================================================== */
+
+char *  markerName(char *  baseName, int n)
+{
+  char *  mark = (char * ) malloc( (strlen(baseName)+1) + (log10(n)+1) + 1 );
+
+  sprintf(mark, "%s_%u", baseName,n);
+
+  // printf("*** %s\n", mark);
+
+  return mark;
+
+}
+
+/* ====================================================================================== */
+
+int isPot2(int n)
+{
+  int k;
+  return (k = log2(n)) == log2(n) ;
+}
