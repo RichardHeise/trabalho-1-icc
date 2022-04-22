@@ -5,7 +5,7 @@
 
 # ----------------------------------------------------------------- #
 # Declaration of targets and compiling options
-CFLAGS = -Wall -g -DLIKWID_PERFMON -I${LIKWID_INCLUDE}
+CFLAGS = -Wall -g -DLIKWID_PERFMON -I${LIKWID_INCLUDE} -O3 -mavx -march=native
 CC = gcc
 LIBS = -lm -lmatheval -L${LIKWID_LIB} -llikwid
 OBJ = main.o newton.o mathLib.o utils.o methods.o rosenbrock.o
