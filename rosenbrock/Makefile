@@ -19,7 +19,7 @@ newtonPC: $(OBJ)
 	$(CC) -o newtonPC $(OBJ) $(LIBS)
 
 run: all
-	likwid-perfctr -C 3 -g L2CACHE -m ./newtonPC < $(INPUT)
+	likwid-perfctr -C 3 -g L2CACHE -O -m ./newtonPC < $(INPUT)
 
 runOutput: all
 	./newtonPC < $(INPUT) -o saida.txt
