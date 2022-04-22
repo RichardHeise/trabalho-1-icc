@@ -147,7 +147,7 @@ void newtonDefault(sl* linSys) {
 
         LIKWID_MARKER_STOP(name);
         free(name);
-        
+
         linSys->out->system[NEWTON_EXACT] = timestamp() - linSys->out->system[NEWTON_EXACT];
 
         for (int j = 0; j < linSys->d; j++)
@@ -167,16 +167,38 @@ void newtonGS(sl* linSys) {
 
     registerValue(linSys, NEWTON_INEXACT, 0);
     linSys->out->newtonInexact = 1;
+    char* name;
 
     for (i = 0; i < linSys->maxIter; i++) {
+        name = markerName("no_newtonGS_gradient", linSys->d);
+        LIKWID_MARKER_START(name);
+
         calcGradient(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
 
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
+        name = markerName("no_newtonGS_hessian", linSys->d);
+        LIKWID_MARKER_START(name);
+
         calcHessian(linSys);   
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+
+
         linSys->out->system[NEWTON_INEXACT] = timestamp(); 
+
+        name = markerName("no_newtonGS_gaussSeidel", linSys->d);
+        LIKWID_MARKER_START(name);
+
         gaussSeidel(linSys); 
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
         linSys->out->system[NEWTON_INEXACT] = timestamp() - linSys->out->system[NEWTON_INEXACT]; 
 
         for (int j = 0; j < linSys->d; j++)
