@@ -7,6 +7,7 @@
 #include <matheval.h>
 #include <stdlib.h>
 #include <string.h>
+#include <likwid.h>
 #include "rosenbrock.h"
 #include "newton.h"
 #include "methods.h"
