@@ -119,14 +119,35 @@ void newtonDefault(sl* linSys) {
     linSys->out->newtonExact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
+        char* name = markerName("no_newtonDefault_gradient", linSys->d);
+        LIKWID_MARKER_START(name);
+
         calcGradient(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
 
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
+        name = markerName("no_newtonDefault_hessian", linSys->d);
+        LIKWID_MARKER_START(name);
+
         calcHessian(linSys);
-        linSys->out->system[NEWTON_EXACT] = timestamp();   
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+
+        linSys->out->system[NEWTON_EXACT] = timestamp();
+           
+        name = markerName("no_newtonDefault_solveSL", linSys->d);
+        LIKWID_MARKER_START(name);
+
         solveSL(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+        
         linSys->out->system[NEWTON_EXACT] = timestamp() - linSys->out->system[NEWTON_EXACT];
 
         for (int j = 0; j < linSys->d; j++)

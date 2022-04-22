@@ -51,14 +51,22 @@ int main(int argc, char** argv){
     if(processSl){
       // After a method is done, the linear system is reset
       // and the next one is processed
-      char* name = markerName("newtonDefault", linSys->d);
+      char* name = markerName("no_newtonDefault", linSys->d);
       LIKWID_MARKER_START(name);
+
       newtonDefault(linSys);
       resetSl(linSys);
+
       LIKWID_MARKER_STOP(name);
       free(name);
 
+      name = markerName("no_newtonGS", linSys->d);
+      LIKWID_MARKER_START(name);
+
       newtonGS(linSys);
+
+      LIKWID_MARKER_STOP(name);
+      free(name);
 
       slDestructor(linSys);
     }
