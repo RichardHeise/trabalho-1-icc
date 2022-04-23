@@ -1,0 +1,5 @@
+N,n_newtonDefault,o_newtonDefault,n_newtonDefault_solver,o_newtonDefault_solver,n_hessian,o_hessian,n_gradient,o_gradient,n_newtonGS,o_newtonGS,n_newtonGS_solver,o_newtonGS_solver
+10,0.026060,0,0.000032,0,0.000019,0,0.000004,0,0.026772,0,0.000126,0
+32,0.027672,0,0.000271,0,0.000157,0,0.000010,0,0.028187,0,0.000760,0
+50,0.028237,0,0.000737,0,0.000361,0,0.000010,0,0.029361,0,0.001806,0
+64,0.029230,0,0.001341,0,0.000581,0,0.000012,0,0.030716,0,0.002853,0
