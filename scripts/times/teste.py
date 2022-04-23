@@ -8,7 +8,6 @@ def main():
   subprocess.call(['sh', './time.sh'])
 
   df = pd.read_csv("generalTime.csv")
-  print(df)
   df.plot(
     x = 'N', 
     y=[
@@ -28,7 +27,9 @@ def main():
     kind = 'line',
     title= 'Time (sec)',
   )
-  plt.show()
+  figure = plt.gcf()
+  figure.set_size_inches(18, 9)
+  plt.savefig(fname='time.png')
 
 if __name__ == "__main__":
   main()
