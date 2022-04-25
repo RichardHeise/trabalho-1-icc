@@ -19,7 +19,19 @@ newtonPC: $(OBJ)
 	$(CC) -o newtonPC $(OBJ) $(LIBS)
 
 run: all
+	likwid-perfctr -C 3 -g L3 -O -m ./newtonPC < $(INPUT)
+
+runL3: all
+	likwid-perfctr -C 3 -g L3 -O -m ./newtonPC < $(INPUT)
+
+runL2: all
 	likwid-perfctr -C 3 -g L2CACHE -O -m ./newtonPC < $(INPUT)
+
+runFLOPS_DP: all
+	likwid-perfctr -C 3 -g FLOPS_DP -O -m ./newtonPC < $(INPUT)
+
+runFLOPS_AVX: all
+	likwid-perfctr -C 3 -g FLOPS_AVX -O -m ./newtonPC < $(INPUT)
 
 runOutput: all
 	./newtonPC < $(INPUT) -o saida.txt
