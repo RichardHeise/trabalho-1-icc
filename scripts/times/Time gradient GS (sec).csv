@@ -1,0 +1,5 @@
+N,n_newtonGS_gradient,o_newtonGS_gradient
+10,0.000004,
+32,0.000008,
+50,0.000010,
+64,0.000012,

@@ -1,35 +1,49 @@
 # reqs: pandas and matplotlib
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import subprocess
 
-def main():
-  subprocess.call(['sh', './time.sh'])
+def makeGraph(kind, title, x, log, alg, search):
+  subprocess.call(['sh', './time.sh', alg, title, search])
 
-  df = pd.read_csv("generalTime.csv")
+  y = ['n_' + alg, 'o_' + alg]
+  df = pd.read_csv(title + '.csv').fillna(0)
   df.plot(
-    x = 'N', 
-    y=[
-      'n_hessian',
-      'o_hessian',
-      'n_gradient',
-      'o_gradient', 
-      'n_newtonDefault', 
-      'o_newtonDefault',
-      'n_newtonDefault_solver',
-      'o_newtonDefault_solver',
-      'n_newtonGS', 
-      'o_newtonGS',
-      'n_newtonGS_solver',
-      'o_newtonGS_solver'
-    ], 
-    kind = 'line',
-    title= 'Time (sec)',
+    x = x, 
+    y=y, 
+    kind = kind,
+    title= title,
+    logy = log,
+    grid = True,
   )
   figure = plt.gcf()
   figure.set_size_inches(18, 9)
-  plt.savefig(fname='time.png')
+  plt.savefig(fname=title + '.png')
+  
+
+def main():
+  makeGraph('line', 'Time Default (sec)', 'N', True, 'newtonDefault', 'rdtsc')
+  makeGraph('line', 'Time Hessian Default (sec)', 'N', True, 'newtonDefault_hessian', 'rdtsc')
+  makeGraph('line', 'Time gradient Default (sec)', 'N', True, 'newtonDefault_gradient', 'rdtsc')
+  makeGraph('line', 'Time solver Default (sec)', 'N', True, 'newtonDefault_solver', 'rdtsc')
+  
+  makeGraph('line', 'Time GS (sec)', 'N', True, 'newtonGS', 'rdtsc')
+  makeGraph('line', 'Time Hessian GS (sec)', 'N', True, 'newtonGS_hessian', 'rdtsc')
+  makeGraph('line', 'Time gradient GS (sec)', 'N', True, 'newtonGS_gradient', 'rdtsc')
+  makeGraph('line', 'Time solver GS (sec)', 'N', True, 'newtonGS_solver', 'rdtsc')
+  
+  
+  makeGraph('line', 'L2 Miss Ratio Default (sec)', 'N', False, 'newtonDefault', 'L2 miss ratio')
+  makeGraph('line', 'L2 Miss Ratio Hessian Default (sec)', 'N', False, 'newtonDefault_hessian', 'L2 miss ratio')
+  makeGraph('line', 'L2 Miss Ratio gradient Default (sec)', 'N', False, 'newtonDefault_gradient', 'L2 miss ratio')
+  makeGraph('line', 'L2 Miss Ratio solver Default (sec)', 'N', False, 'newtonDefault_solver', 'L2 miss ratio')
+  
+  makeGraph('line', 'L2 Miss Ratio GS (sec)', 'N', False, 'newtonGS', 'L2 miss ratio')
+  makeGraph('line', 'L2 Miss Ratio Hessian GS (sec)', 'N', False, 'newtonGS_hessian', 'L2 miss ratio')
+  makeGraph('line', 'L2 Miss Ratio gradient GS (sec)', 'N', False, 'newtonGS_gradient', 'L2 miss ratio')
+  makeGraph('line', 'L2 Miss Ratio solver GS (sec)', 'N', False, 'newtonGS_solver', 'L2 miss ratio')
 
 if __name__ == "__main__":
   main()
