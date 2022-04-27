@@ -46,15 +46,15 @@ def main():
   makeGraph('line', 'L2 Miss Ratio solver GS (sec)', 'N', False, 'newtonGS_solver', 'L2 miss ratio', 'saidaL2', '9')
 
 
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] Default', 'N', False, 'newtonDefault', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] Hessian Default', 'N', False, 'newtonDefault_hessian', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] gradient Default', 'N', False, 'newtonDefault_gradient', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] solver Default', 'N', False, 'newtonDefault_solver', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] Default', 'N', False, 'newtonDefault', 'L3 bandwidth', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] Hessian Default', 'N', False, 'newtonDefault_hessian', 'L3 bandwidth', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] gradient Default', 'N', False, 'newtonDefault_gradient', 'L3 bandwidth', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] solver Default', 'N', False, 'newtonDefault_solver', 'L3 bandwidth', 'saidaL3', '10')
   
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] GS', 'N', False, 'newtonGS', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] Hessian GS', 'N', False, 'newtonGS_hessian', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] gradient GS', 'N', False, 'newtonGS_gradient', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
-  makeGraph('line', 'L3 Memory Bandwidth [MBytes/s] solver GS', 'N', False, 'newtonGS_solver', 'L3 bandwidth [MBytes/s]', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] GS', 'N', False, 'newtonGS', 'L3 bandwidth', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] Hessian GS', 'N', False, 'newtonGS_hessian', 'L3 bandwidth', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] gradient GS', 'N', False, 'newtonGS_gradient', 'L3 bandwidth', 'saidaL3', '10')
+  makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] solver GS', 'N', False, 'newtonGS_solver', 'L3 bandwidth', 'saidaL3', '10')
   
 
 
