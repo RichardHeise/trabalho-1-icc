@@ -1,0 +1,59 @@
+likwid-perfctr -O -C 3 -g FLOPS_DP -m ./newtonPC < entrada.dat
+--------------------------------------------------------------------------------
+CPU name:	Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+CPU type:	Intel Coffeelake processor
+CPU clock:	3.41 GHz
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+STRUCT,Info,3
+CPU name:,Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz,
+CPU type:,Intel Coffeelake processor,
+CPU clock:,3.407981608 GHz,
+TABLE,Region newtonDefault_10,Group 1 Raw,FLOPS_DP,6
+Region Info,Core 3,
+RDTSC Runtime [s],0.000066,
+call count,1,
+Event,Counter,Core 3
+INSTR_RETIRED_ANY,FIXC0,426829
+CPU_CLK_UNHALTED_CORE,FIXC1,170323
+CPU_CLK_UNHALTED_REF,FIXC2,152792
+FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE,PMC0,0
+FP_ARITH_INST_RETIRED_SCALAR_DOUBLE,PMC1,28126
+FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE,PMC2,6414
+TABLE,Region newtonDefault_10,Group 1 Metric,FLOPS_DP,9
+Metric,Core 3,
+Runtime (RDTSC) [s],0.0001,
+Runtime unhalted [s],4.997768e-05,
+Clock [MHz],3799.0055,
+CPI,0.3990,
+DP MFLOP/s,816.9879,
+AVX DP MFLOP/s,389.7334,
+Packed MUOPS/s,97.4333,
+Scalar MUOPS/s,427.2545,
+Vectorization ratio,18.5698,
+STRUCT,Info,3
+CPU name:,Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz,
+CPU type:,Intel Coffeelake processor,
+CPU clock:,3.407981608 GHz,
+TABLE,Region newtonDefault_32,Group 1 Raw,FLOPS_DP,6
+Region Info,Core 3,
+RDTSC Runtime [s],0.000445,
+call count,1,
+Event,Counter,Core 3
+INSTR_RETIRED_ANY,FIXC0,4426836
+CPU_CLK_UNHALTED_CORE,FIXC1,1603042
+CPU_CLK_UNHALTED_REF,FIXC2,1442152
+FP_ARITH_INST_RETIRED_128B_PACKED_DOUBLE,PMC0,0
+FP_ARITH_INST_RETIRED_SCALAR_DOUBLE,PMC1,238012
+FP_ARITH_INST_RETIRED_256B_PACKED_DOUBLE,PMC2,243699
+TABLE,Region newtonDefault_32,Group 1 Metric,FLOPS_DP,9
+Metric,Core 3,
+Runtime (RDTSC) [s],0.0004,
+Runtime unhalted [s],0.0005,
+Clock [MHz],3788.1844,
+CPI,0.3621,
+DP MFLOP/s,2723.1825,
+AVX DP MFLOP/s,2188.7615,
+Packed MUOPS/s,547.1904,
+Scalar MUOPS/s,534.4210,
+Vectorization ratio,50.5903,
