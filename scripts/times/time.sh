@@ -1,4 +1,3 @@
-touch generalTime.csv
 
 # hessian and gradient are the same for both newtonDefault and newtonGS
 # we use the same function
