@@ -10,5 +10,5 @@ make runL2 >> ../scripts/saidaL2.dat
 make runL3 >> ../scripts/saidaL3.dat
 make runFLOPS_DP >> ../scripts/saidaFDP.dat
 
-cd ../scripts/time
+cd ../scripts/times
 python3 teste.py
