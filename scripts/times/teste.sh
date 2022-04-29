@@ -1,17 +1,16 @@
-touch generalTime.csv
+ALG=$1
+OUTPUT_NAME=$2
+INPUT_NAME=$3
+SIZE=$4
 
-# hessian and gradient are the same for both newtonDefault and newtonGS
-# we use the same function
-NOPT=$1
-OPT=$2
-OUTPUT_NAME=$3
-SEARCH=$4
-
-echo "N,${NOPT},${OPT}" > $OUTPUT_NAME.csv
-for N in 10 32 50 64
+echo "N,n_${ALG}_DP,o_${ALG}_DP,n_${ALG}_AVX,o_${ALG}_AVX" > $OUTPUT_NAME.csv
+for N in 10 32 50 64 100 128 200 250 256 300 400 512 600 1000 1024 2000 2048 3000 4096
 do
-  FIRST_COLUMN=$(cat ../saida.dat | grep -i -A 9 ${NOPT}_$N | grep -i "$SEARCH" | head -n 1 | cut -d , -f 2)
-  SECOND_COLUMN=$(cat ../saida.dat | grep -i -A 9 ${OPT}_$N | grep -i "$SEARCH" | head -n 1 | cut -d , -f 2)
-  
-  echo "$N,${FIRST_COLUMN},${SECOND_COLUMN}" >> $OUTPUT_NAME.csv
+  FIRST_COLUMN=$(cat ../${INPUT_NAME}.dat | grep -i -A $SIZE n_${ALG}_$N | grep -i "^DP" | head -n 1 | cut -d , -f 2)
+  SECOND_COLUMN=$(cat ../${INPUT_NAME}.dat | grep -i -A $SIZE o_${ALG}_$N | grep -i "^DP" | head -n 1 | cut -d , -f 2)
+  THIRD_COLUMN=$(cat ../${INPUT_NAME}.dat | grep -i -A $SIZE n_${ALG}_$N | grep -i "^AVX" | head -n 1 | cut -d , -f 2)
+  FOURTH_COLUMN=$(cat ../${INPUT_NAME}.dat | grep -i -A $SIZE o_${ALG}_$N | grep -i "^AVX" | head -n 1 | cut -d , -f 2)
+
+  echo "$N,${FIRST_COLUMN},${SECOND_COLUMN},${THIRD_COLUMN},${FOURTH_COLUMN}" >> $OUTPUT_NAME.csv
 done
+
