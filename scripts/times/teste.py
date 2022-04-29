@@ -21,6 +21,7 @@ def makeGraph(kind, title, x, log, alg, search, input, size):
   figure = plt.gcf()
   figure.set_size_inches(18, 9)
   plt.savefig(fname=title + '.png')
+  plt.close('all')
   
 
 def main():
