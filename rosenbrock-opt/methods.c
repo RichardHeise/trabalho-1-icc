@@ -46,8 +46,9 @@ void elGauss(sl* linSys){
   double** A = linSys->Hi;
   double*  b = linSys->nGi;
   int      n = linSys->d;
+  int i, j;
   
-  for(int i = 0; i < n; i++){
+  for(i = 0; i < n; i++){
     // Partial pivoting
     int pivot = findMax(A, i, n);
     if(pivot != i)
@@ -58,8 +59,16 @@ void elGauss(sl* linSys){
       checkZeroDivision(A[i][i], linSys->f->strFunc);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
-      for(int j = i + 1; j < n; j++)
+      for(j = i + 1; j < n - (n%4); j+=4){
         A[k][j] -= m * A[i][j];
+        A[k][j + 1] -= m * A[i][j + 1];
+        A[k][j + 2] -= m * A[i][j + 2];
+        A[k][j + 3] -= m * A[i][j + 3];
+      }
+
+      for(j; j < n; j++)
+        A[k][j] -= m * A[i][j];
+
       b[k] -= b[i] * m;
     }
   }
@@ -73,11 +82,20 @@ void retroSub(sl* linSys){
   double* b = linSys->nGi;
   double* x = linSys->deltai;
   int n = linSys->d;
+  int i, j;
 
-  for(int i = n -1; i >= 0; i--){
+  for(i = n -1; i >= 0; i--){
     x[i] = b[i];
-    for(int j = i + 1; j < n; j++)
+    for(j = i + 1; j < n - (n%4); j+=4){
       x[i] -= A[i][j] * x[j];
+      x[i] -= A[i][j + 1] * x[j + 1];
+      x[i] -= A[i][j + 2] * x[j + 2];
+      x[i] -= A[i][j + 3] * x[j + 3];
+    }
+
+    for(j; j < n; j++)
+      x[i] -= A[i][j] * x[j];
+
     checkZeroDivision(A[i][i], linSys->f->strFunc);
     x[i] /= A[i][i];
   }
@@ -86,17 +104,37 @@ void retroSub(sl* linSys){
 /* ====================================================================================== */
 
 void calcHessian(sl* linSys) {
-  for (int i = 0; i < linSys->d; i++) {
-    for (int j = 0; j < linSys->d; j++) {
+  int i, j;
+  for (i = 0; i < linSys->d; i++) {
+    for (j = 0; j < linSys->d - (linSys->d % 4); j += 4) {
       linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
+      linSys->Hi[i][j + 1] = rosenbrock_dxdy(i, j + 1, linSys->Xi, linSys->d); 
+      linSys->Hi[i][j + 2] = rosenbrock_dxdy(i, j + 2, linSys->Xi, linSys->d); 
+      linSys->Hi[i][j + 3] = rosenbrock_dxdy(i, j + 3, linSys->Xi, linSys->d); 
     }
+
+    for(j; j < linSys->d; j++)
+      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
   }
 }
 
 /* ====================================================================================== */
 
 void calcGradient(sl* linSys) {
-  for(int i = 0; i < linSys->d; i++){
+  int i;
+  for(i = 0; i < linSys->d - (linSys->d % 4); i += 4){
+    linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
+    linSys->Gi[i + 1] = rosenbrock_dx(i + 1, linSys->Xi, linSys->d);
+    linSys->Gi[i + 2] = rosenbrock_dx(i + 2, linSys->Xi, linSys->d);
+    linSys->Gi[i + 3] = rosenbrock_dx(i + 3, linSys->Xi, linSys->d);
+
+    linSys->nGi[i] = (-1*linSys->Gi[i]);
+    linSys->nGi[i + 1] = (-1*linSys->Gi[i + 1]);
+    linSys->nGi[i + 2] = (-1*linSys->Gi[i + 2]);
+    linSys->nGi[i + 3] = (-1*linSys->Gi[i + 3]);
+  }
+
+  for(i; i < linSys->d; i++){
     linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
 
     linSys->nGi[i] = (-1*linSys->Gi[i]);
@@ -123,19 +161,42 @@ void gaussSeidel(sl* linSys) {
   double error = 10e-6;
 
   int k, i, j;
-  double s, xk, norm, diff = 0;
+  double xk, norm, diff = 0;
+  double s[4], soma;
   norm=1.0+error;
 
   for (k=0; norm > error; ++k) {
     norm = 0.0;
 
     for (i=0; i < n; ++i) {
-      for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
+      memset(s, 0, sizeof(double)*4);
+      soma = 0;
+      for (j=0; j < i - (i % 4); j+=4){
+        s[0] += A[i][j] * X[j];
+        s[1] += A[i][j + 1] * X[j + 1];
+        s[2] += A[i][j + 2] * X[j + 2];
+        s[3] += A[i][j + 3] * X[j + 3];
+      }
 
-      for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
+      for(j; j < i; j++)
+        s[0] += A[i][j] * X[j];
+
+      for (j=i+1; j < n - (n % 4); j += 4){
+        s[0] += A[i][j] * X[j];
+        s[1] += A[i][j + 1] * X[j + 1];
+        s[2] += A[i][j + 2] * X[j + 2];
+        s[3] += A[i][j + 3] * X[j + 3];
+      }
+
+      for(j; j < n; j++)
+        s[0] += A[i][j] * X[j];
+
+      for(j = 0; j < 4; j++){
+        soma += s[j];
+      }
 
       checkZeroDivision(A[i][i], linSys->f->strFunc);
-      xk = (B[i] - s) / A[i][i];
+      xk = (B[i] - soma) / A[i][i];
       diff = fabs(xk - X[i]);
 
       if (diff > norm) norm = diff;

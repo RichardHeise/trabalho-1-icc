@@ -15,6 +15,7 @@
 #define OPENING_FILE_ERROR 2
 #define MEM_ALLOC_ERROR 3
 #define USAGE_ERROR 4
+#define PADDING 1
 /**
  * Receives int size
  * Receives char* error 
@@ -95,5 +96,7 @@ void showMatrix(double** A, double *b, int n);
  * checks if denominator is 0
  */
 void checkZeroDivision(double denominator, char* funcName);
+
+char *  markerName(char *  baseName, int n);
 
 #endif

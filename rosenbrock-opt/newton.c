@@ -113,25 +113,52 @@ void registerValue(sl* linSys, int i, int j){
 /* ====================================================================================== */
 
 void newtonDefault(sl* linSys) {
-    int i;
+    int i, j;
 
     // Register output
     registerValue(linSys, NEWTON_EXACT, 0);
     linSys->out->newtonExact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
+        char* name = markerName("n_newtonDefault_gradient", linSys->d);
+        LIKWID_MARKER_START(name);
+
         calcGradient(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
 
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        calcHessian(linSys);
-        linSys->out->system[NEWTON_EXACT] = timestamp();   
-        solveSL(linSys);
-        linSys->out->system[NEWTON_EXACT] = timestamp() - linSys->out->system[NEWTON_EXACT];
+        name = markerName("n_newtonDefault_hessian", linSys->d);
+        LIKWID_MARKER_START(name);
 
-        for (int j = 0; j < linSys->d; j++)
+        calcHessian(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+
+        name = markerName("n_newtonDefault_solver", linSys->d);
+        LIKWID_MARKER_START(name);
+
+        solveSL(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+        
+        // unroll and jam on J
+        for (j = 0; j < linSys->d - (linSys->d % 4); j += 4){
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
+            linSys->Xi[j + 1] = linSys->Xi[j + 1] + linSys->deltai[j + 1];
+            linSys->Xi[j + 2] = linSys->Xi[j + 2] + linSys->deltai[j + 2];
+            linSys->Xi[j + 3] = linSys->Xi[j + 3] + linSys->deltai[j + 3];
+        }
+        
+        // calculating residue
+        for(j; j < linSys->d; j++)
+            linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
+
         
         registerValue(linSys, NEWTON_EXACT, linSys->out->newtonExact++);
 
@@ -143,24 +170,51 @@ void newtonDefault(sl* linSys) {
 /* ====================================================================================== */
 
 void newtonGS(sl* linSys) {
-    int i;
+    int i, j;
 
     registerValue(linSys, NEWTON_INEXACT, 0);
     linSys->out->newtonInexact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
+        name = markerName("n_newtonGS_gradient", linSys->d);
+        LIKWID_MARKER_START(name);
+        
         calcGradient(linSys);
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
 
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        calcHessian(linSys);   
-        linSys->out->system[NEWTON_INEXACT] = timestamp(); 
-        gaussSeidel(linSys); 
-        linSys->out->system[NEWTON_INEXACT] = timestamp() - linSys->out->system[NEWTON_INEXACT]; 
+        name = markerName("n_newtonGS_hessian", linSys->d);
+        LIKWID_MARKER_START(name);
 
-        for (int j = 0; j < linSys->d; j++)
+        calcHessian(linSys);   
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+
+        name = markerName("n_newtonGS_solver", linSys->d);
+        LIKWID_MARKER_START(name);
+
+        gaussSeidel(linSys); 
+
+        LIKWID_MARKER_STOP(name);
+        free(name);
+
+        // unroll and jam on J
+        for (j = 0; j < linSys->d - (linSys->d % 4); j += 4){
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
+            linSys->Xi[j + 1] = linSys->Xi[j + 1] + linSys->deltai[j + 1];
+            linSys->Xi[j + 2] = linSys->Xi[j + 2] + linSys->deltai[j + 2];
+            linSys->Xi[j + 3] = linSys->Xi[j + 3] + linSys->deltai[j + 3];
+        }
+        
+        // calculating residue
+        for(j; j < linSys->d; j++)
+            linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
+
 
         registerValue(linSys, NEWTON_INEXACT, linSys->out->newtonInexact++);
         
@@ -192,9 +246,7 @@ void newtonMod(sl* linSys) {
             calcHessian(linSys);  
             decompLU(sysLU, linSys->f->strFunc); 
         }
-        linSys->out->system[NEWTON_LU] = timestamp(); 
         solveLU(linSys, sysLU);
-        linSys->out->system[NEWTON_LU] = timestamp() - linSys->out->system[NEWTON_LU]; 
 
         for (int j = 0; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];

@@ -55,10 +55,11 @@ int main(int argc, char** argv){
       LIKWID_MARKER_START(name);
 
       newtonDefault(linSys);
-      resetSl(linSys);
 
       LIKWID_MARKER_STOP(name);
       free(name);
+      
+      resetSl(linSys);
 
       name = markerName("n_newtonGS", linSys->d);
       LIKWID_MARKER_START(name);

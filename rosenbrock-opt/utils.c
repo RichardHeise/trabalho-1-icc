@@ -30,15 +30,25 @@ void checkZeroDivision(double denominator, char* funcName){
 
 /* ====================================================================================== */
 
+int isPot2(int n)
+{
+  int k;
+  return (k = log2(n)) == log2(n) ;
+}
+
+/* ====================================================================================== */
+
 void** mallocMatrix(int lin, int col, unsigned int varSize){
   void** mat;
   int i;
 
+  int paddedCol = isPot2(col) ? col + PADDING : col;
+
   mat = mallocCheck(lin * sizeof(void*), "allocating line pointers for matrix");
-  mat[0] = mallocCheck(lin * col * varSize, "allocating element vector");
+  mat[0] = mallocCheck(lin * paddedCol * varSize, "allocating element vector");
 
   for(i = 1; i < lin; i++)
-    mat[i] = mat[0] + i * col * varSize;
+    mat[i] = mat[0] + i * paddedCol * varSize;
 
   return mat;
 }
@@ -195,3 +205,20 @@ void showMatrixInt(double** A, int *b, int n){
   }
   printf("\n");
 }
+
+/* ====================================================================================== */
+
+char *  markerName(char *  baseName, int n)
+{
+  char *  mark = (char * ) malloc( (strlen(baseName)+1) + (log10(n)+1) + 1 );
+
+  sprintf(mark, "%s_%u", baseName,n);
+
+  // printf("*** %s\n", mark);
+
+  return mark;
+
+}
+
+/* ====================================================================================== */
+

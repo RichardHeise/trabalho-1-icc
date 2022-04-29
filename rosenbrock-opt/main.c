@@ -16,6 +16,8 @@
 #include "newton.h"
 
 int main(int argc, char** argv){
+  LIKWID_MARKER_INIT;
+
   // Pointer to output file
   FILE* output = NULL;
 
@@ -49,20 +51,30 @@ int main(int argc, char** argv){
     if(processSl){
       // After a method is done, the linear system is reset
       // and the next one is processed
-      linSys->out->total[NEWTON_EXACT] = timestamp();
+      char* name = markerName("n_newtonDefault", linSys->d);
+      LIKWID_MARKER_START(name);
+
       newtonDefault(linSys);
-      linSys->out->total[NEWTON_EXACT] = timestamp() - linSys->out->total[NEWTON_EXACT];
+
+      LIKWID_MARKER_STOP(name);
+      free(name);
+      
       resetSl(linSys);
 
-      linSys->out->total[NEWTON_INEXACT] = timestamp();
-      newtonGS(linSys);
-      linSys->out->total[NEWTON_INEXACT] = timestamp() - linSys->out->total[NEWTON_INEXACT];
+      name = markerName("n_newtonGS", linSys->d);
+      LIKWID_MARKER_START(name);
 
-      printOutput(output, linSys);
+      newtonGS(linSys);
+
+      LIKWID_MARKER_STOP(name);
+      free(name);
+
       slDestructor(linSys);
     }
     
   }
+
+  LIKWID_MARKER_CLOSE;
 
   return 0;
 }
