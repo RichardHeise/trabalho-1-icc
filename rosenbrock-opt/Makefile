@@ -5,7 +5,7 @@
 
 # ----------------------------------------------------------------- #
 # Declaration of targets and compiling options
-CFLAGS = -Wall -g -DLIKWID_PERFMON -I${LIKWID_INCLUDE}
+CFLAGS = -Wall -g -DLIKWID_PERFMON -I${LIKWID_INCLUDE} -O3 -mavx -march=native
 CC = gcc
 LIBS = -lm -lmatheval -L${LIKWID_LIB} -llikwid
 OBJ = main.o newton.o mathLib.o utils.o methods.o rosenbrock.o
@@ -19,7 +19,19 @@ newtonPC: $(OBJ)
 	$(CC) -o newtonPC $(OBJ) $(LIBS)
 
 run: all
-	./newtonPC < $(INPUT)
+	likwid-perfctr -C 3 -g L3 -O -m ./newtonPC < $(INPUT)
+
+runL3: all
+	likwid-perfctr -C 3 -g L3 -O -m ./newtonPC < $(INPUT)
+
+runL2: all
+	likwid-perfctr -C 3 -g L2CACHE -O -m ./newtonPC < $(INPUT)
+
+runFLOPS_DP: all
+	likwid-perfctr -C 3 -g FLOPS_DP -O -m ./newtonPC < $(INPUT)
+
+runFLOPS_AVX: all
+	likwid-perfctr -C 3 -g FLOPS_AVX -O -m ./newtonPC < $(INPUT)
 
 runOutput: all
 	./newtonPC < $(INPUT) -o saida.txt

@@ -156,7 +156,7 @@ void newtonDefault(sl* linSys) {
         }
         
         // calculating residue
-        for(j; j < linSys->d; j++)
+        for(; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
 
         
@@ -176,7 +176,7 @@ void newtonGS(sl* linSys) {
     linSys->out->newtonInexact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
-        name = markerName("n_newtonGS_gradient", linSys->d);
+        char* name = markerName("n_newtonGS_gradient", linSys->d);
         LIKWID_MARKER_START(name);
         
         calcGradient(linSys);
@@ -212,7 +212,7 @@ void newtonGS(sl* linSys) {
         }
         
         // calculating residue
-        for(j; j < linSys->d; j++)
+        for(; j < linSys->d; j++)
             linSys->Xi[j] = linSys->Xi[j] + linSys->deltai[j];
 
 
