@@ -22,6 +22,24 @@ def makeGraph(kind, title, x, log, alg, search, input, size):
   figure.set_size_inches(18, 9)
   plt.savefig(fname=title + '.png')
   plt.close('all')
+
+def makeGraphDP(kind, title, x, log, alg, input, size):
+  subprocess.call(['sh', './teste.sh', alg, title, input, size])
+
+  y = ['n_' + alg + '_DP', 'o_' + alg + '_DP', 'n_' + alg + '_AVX', 'o_' + alg + '_AVX']
+  df = pd.read_csv(title + '.csv').fillna(0)
+  df.plot(
+    x = x, 
+    y=y, 
+    kind = kind,
+    title= title,
+    logy = log,
+    grid = True,
+  )
+  figure = plt.gcf()
+  figure.set_size_inches(18, 9)
+  plt.savefig(fname=title + '.png')
+  plt.close('all')
   
 
 def main():
@@ -56,6 +74,17 @@ def main():
   makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] Hessian GS', 'N', False, 'newtonGS_hessian', 'L3 bandwidth', 'saidaL3', '10')
   makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] gradient GS', 'N', False, 'newtonGS_gradient', 'L3 bandwidth', 'saidaL3', '10')
   makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] solver GS', 'N', False, 'newtonGS_solver', 'L3 bandwidth', 'saidaL3', '10')
+
+
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] Default', 'N', False, 'newtonDefault', 'saidaFDP', '10')
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] Hessian Default', 'N', False, 'newtonDefault_hessian', 'saidaFDP', '10')
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] gradient Default', 'N', False, 'newtonDefault_gradient', 'saidaFDP', '10')
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] solver Default', 'N', False, 'newtonDefault_solver', 'saidaFDP', '10')
+
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] GS', 'N', False, 'newtonGS', 'saidaFDP', '10')
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] Hessian GS', 'N', False, 'newtonGS_hessian', 'saidaFDP', '10')
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] gradient GS', 'N', False, 'newtonGS_gradient', 'saidaFDP', '10')
+  makeGraphDP('line', 'FLOPS [MFLOPS por seg] solver GS', 'N', False, 'newtonGS_solver', 'saidaFDP', '10')
   
 
 
