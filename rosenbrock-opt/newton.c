@@ -120,7 +120,7 @@ void newtonDefault(sl* linSys) {
     linSys->out->newtonExact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
-        char* name = markerName("n_newtonDefault_gradient", linSys->d);
+        char* name = markerName("o_newtonDefault_gradient", linSys->d);
         LIKWID_MARKER_START(name);
 
         calcGradient(linSys);
@@ -131,7 +131,7 @@ void newtonDefault(sl* linSys) {
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        name = markerName("n_newtonDefault_hessian", linSys->d);
+        name = markerName("o_newtonDefault_hessian", linSys->d);
         LIKWID_MARKER_START(name);
 
         calcHessian(linSys);
@@ -139,7 +139,7 @@ void newtonDefault(sl* linSys) {
         LIKWID_MARKER_STOP(name);
         free(name);
 
-        name = markerName("n_newtonDefault_solver", linSys->d);
+        name = markerName("o_newtonDefault_solver", linSys->d);
         LIKWID_MARKER_START(name);
 
         solveSL(linSys);
@@ -176,7 +176,7 @@ void newtonGS(sl* linSys) {
     linSys->out->newtonInexact = 1;
 
     for (i = 0; i < linSys->maxIter; i++) {
-        char* name = markerName("n_newtonGS_gradient", linSys->d);
+        char* name = markerName("o_newtonGS_gradient", linSys->d);
         LIKWID_MARKER_START(name);
         
         calcGradient(linSys);
@@ -187,7 +187,7 @@ void newtonGS(sl* linSys) {
         if ( norm(linSys->Gi, linSys->d) < linSys->eps ) 
             return;
 
-        name = markerName("n_newtonGS_hessian", linSys->d);
+        name = markerName("o_newtonGS_hessian", linSys->d);
         LIKWID_MARKER_START(name);
 
         calcHessian(linSys);   
@@ -195,7 +195,7 @@ void newtonGS(sl* linSys) {
         LIKWID_MARKER_STOP(name);
         free(name);
 
-        name = markerName("n_newtonGS_solver", linSys->d);
+        name = markerName("o_newtonGS_solver", linSys->d);
         LIKWID_MARKER_START(name);
 
         gaussSeidel(linSys); 
