@@ -56,7 +56,7 @@ void elGauss(sl* linSys){
 
     // Gauss elimination
     for(int k = i + 1; k < n; k++){
-      checkZeroDivision(A[i][i], linSys->f->strFunc);
+      checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
       for(j = i + 1; j < n ; j++){
@@ -85,7 +85,7 @@ void retroSub(sl* linSys){
 
     }
 
-    checkZeroDivision(A[i][i], linSys->f->strFunc);
+    checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
     x[i] /= A[i][i];
   }
 }
@@ -203,7 +203,7 @@ void gaussSeidel(sl* linSys) {
         soma += s[j];
       }
 
-      checkZeroDivision(A[i][i], linSys->f->strFunc);
+      checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - soma) / A[i][i];
       diff = fabs(xk - X[i]);
 
@@ -264,7 +264,7 @@ void resolve_Ly_b(LU *sysLU, sl* linSys) {
 
     for(int j = 0; j < i; j++)
       x[i] -= A[i][j] * x[j];
-    checkZeroDivision(A[i][i], linSys->f->strFunc);
+    checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
     x[i] /= A[i][i];
   }
 } 
@@ -282,7 +282,7 @@ void resolve_Ux_y(LU *sysLU, sl* linSys) {
 
     for(int j = i + 1; j < n; j++)
       x[i] -= A[i][j] * x[j];
-    checkZeroDivision(A[i][i], linSys->f->strFunc);
+    checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
     x[i] /= A[i][i];
   }
 }
@@ -313,7 +313,7 @@ void decompLU(LU* sysLU, char* funcName) {
       switchLinesInt(A, b, i, pivot, n);
 
     for(int k = i + 1; k < n; k++){
-      checkZeroDivision(A[i][i], funcName);
+      checkZeroDivision(A[i][i], funcName, __func__);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
       sysLU->L[k][i] = m;
