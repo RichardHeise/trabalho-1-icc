@@ -90,8 +90,15 @@ void retroSub(sl* linSys){
 /* ====================================================================================== */
 
 void calcHessian(sl* linSys) {
-  for (int i = 0; i < linSys->d; i++) {
-    for (int j = 0; j < linSys->d; j++) {
+  int i, j;
+  for (i = 0; i < linSys->d; i++) {
+    for (j = 0; j < linSys->d - (linSys->d % 4); j += 4) {
+      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
+      linSys->Hi[i][j + 1] = rosenbrock_dxdy(i, j + 1, linSys->Xi, linSys->d); 
+      linSys->Hi[i][j + 2] = rosenbrock_dxdy(i, j + 2, linSys->Xi, linSys->d); 
+      linSys->Hi[i][j + 3] = rosenbrock_dxdy(i, j + 3, linSys->Xi, linSys->d); 
+    }
+    for(j; j < linSys->d; j++)
       linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
     }
   }
