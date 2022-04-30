@@ -95,7 +95,7 @@ void showMatrix(double** A, double *b, int n);
  * Receives char* function name 
  * checks if denominator is 0
  */
-void checkZeroDivision(double denominator, char* funcName);
+void checkZeroDivision(double denominator, char* funcName, char* cFunction);
 
 char *  markerName(char *  baseName, int n);
 
