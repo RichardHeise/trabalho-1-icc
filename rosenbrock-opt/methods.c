@@ -46,9 +46,8 @@ void elGauss(sl* linSys){
   double** A = linSys->Hi;
   double*  b = linSys->nGi;
   int      n = linSys->d;
-  int i, j;
   
-  for(i = 0; i < n; i++){
+  for(int i = 0; i < n; i++){
     // Partial pivoting
     int pivot = findMax(A, i, n);
     if(pivot != i)
@@ -59,10 +58,8 @@ void elGauss(sl* linSys){
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
-      for(j = i + 1; j < n ; j++){
+      for(int j = i + 1; j < n; j++)
         A[k][j] -= m * A[i][j];
-      }
-
       b[k] -= b[i] * m;
     }
   }
@@ -100,20 +97,12 @@ void calcHessian(sl* linSys) {
     for(jj = 0; jj < linSys->d / B_SIZE; ++jj){
       jstart = jj*B_SIZE; jend =jstart + B_SIZE;
 
-      for (i = istart; i < iend - (iend % 4); i+=4) {
+      for (i = istart; i < iend; i+=2) {
         for (j = jstart; j < jend; ++j) {
           linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
           linSys->Hi[i + 1][j] = rosenbrock_dxdy(i + 1, j, linSys->Xi, linSys->d); 
-          linSys->Hi[i + 2][j] = rosenbrock_dxdy(i + 2, j, linSys->Xi, linSys->d); 
-          linSys->Hi[i + 3][j] = rosenbrock_dxdy(i + 3, j, linSys->Xi, linSys->d); 
         }
       }
-      
-      for(; i < iend; ++i){
-        for(j = jstart; j < jend; ++j)
-          linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d);
-      }
-
     }
   }
 }
