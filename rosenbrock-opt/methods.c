@@ -90,16 +90,28 @@ void retroSub(sl* linSys){
 /* ====================================================================================== */
 
 void calcHessian(sl* linSys) {
-  int i, j;
-  for (i = 0; i < linSys->d; i++) {
-    for (j = 0; j < linSys->d - (linSys->d % 4); j += 4) {
-      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
-      linSys->Hi[i][j + 1] = rosenbrock_dxdy(i, j + 1, linSys->Xi, linSys->d); 
-      linSys->Hi[i][j + 2] = rosenbrock_dxdy(i, j + 2, linSys->Xi, linSys->d); 
-      linSys->Hi[i][j + 3] = rosenbrock_dxdy(i, j + 3, linSys->Xi, linSys->d); 
+   int i, j, ii, jj, istart, iend, jstart, jend;
+
+  for(ii = 0; i < linSys->d / BLOCK_SIZE; ++ii){
+    istart = ii*BLOCK_SIZE; iend = istart + BLOCK_SIZE;
+    
+    for(jj = 0; jj < linSys->d / BLOCK_SIZE; ++jj){
+      jstart = jj*BLOCK_SIZE; jend =jstart + BLOCK_SIZE;
+
+      for (i = istart; i < iend - (iend % 4); i+=4) {
+        for (j = jstart; j < jend; ++j) {
+          linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
+          linSys->Hi[i + 1][j] = rosenbrock_dxdy(i + 1, j, linSys->Xi, linSys->d); 
+          linSys->Hi[i + 2][j] = rosenbrock_dxdy(i + 2, j, linSys->Xi, linSys->d); 
+          linSys->Hi[i + 3][j] = rosenbrock_dxdy(i + 3, j, linSys->Xi, linSys->d); 
+        }
+      }
+
+      for(; i < iend; ++i){
+        for(j = jstart; j < jend; ++j)
+          linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d);
+      }
     }
-    for(j; j < linSys->d; j++)
-      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
   }
 }
 
