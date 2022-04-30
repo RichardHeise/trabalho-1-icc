@@ -22,7 +22,7 @@ void* mallocCheck(int size, char* error){
   return pointer;
 }
 
-void checkZeroDivision(double denominator, char* funcName, char* cFunction){
+void checkZeroDivision(double denominator, char* funcName, const char* cFunction){
   if(denominator == 0){
     fprintf(stderr, "There has been a try to divide by zero while resolving function %s\n", funcName);
     fprintf(stderr, "Error at %s\n", cFunction);
