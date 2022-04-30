@@ -10,7 +10,7 @@
 #include "newton.h"
 #include <likwid.h>
 
-#define BLOCK_SIZE 4
+#define B_SIZE 4
 
 typedef struct S_LU {
     int n; // Size of matrix

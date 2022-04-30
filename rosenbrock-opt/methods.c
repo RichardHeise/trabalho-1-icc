@@ -95,10 +95,10 @@ void retroSub(sl* linSys){
 void calcHessian(sl* linSys) {
   int i, j, ii, jj, istart, iend, jstart, jend;
 
-  for(ii = 0; i < linSys->d / BLOCK_SIZE; ++ii){
-    istart = ii*BLOCK_SIZE; iend = istart + BLOCK_SIZE;
-    for(jj = 0; jj < linSys->d / BLOCK_SIZE; ++jj){
-      jstart = jj*BLOCK_SIZE; jend =jstart + BLOCK_SIZE;
+  for(ii = 0; i < linSys->d / B_SIZE; ++ii){
+    istart = ii*B_SIZE; iend = istart + B_SIZE;
+    for(jj = 0; jj < linSys->d / B_SIZE; ++jj){
+      jstart = jj*B_SIZE; jend =jstart + B_SIZE;
 
       for (i = istart; i < iend - (iend % 4); i+=4) {
         for (j = jstart; j < jend; ++j) {
@@ -123,8 +123,8 @@ void calcHessian(sl* linSys) {
 void calcGradient(sl* linSys) {
   int i, ii, istart, iend;
 
-  for(ii = 0; i < linSys->d / BLOCK_SIZE; ++ii){
-    istart = ii * BLOCK_SIZE; iend = istart + BLOCK_SIZE;
+  for(ii = 0; i < linSys->d / B_SIZE; ++ii){
+    istart = ii * B_SIZE; iend = istart + B_SIZE;
 
     for(i = istart; i < iend - (iend % 4); i += 4){
       linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
