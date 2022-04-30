@@ -100,21 +100,11 @@ void calcHessian(sl* linSys) {
 /* ====================================================================================== */
 
 void calcGradient(sl* linSys) {
-  int i, ii, istart, iend;
+  for(int i = 0; i < linSys->d; i++){
+    linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
 
-  for(ii = 0; i < linSys->d / B_SIZE; ++ii){
-    istart = ii * B_SIZE; iend = istart + B_SIZE;
-
-    for(i = istart; i < iend; i += 2){
-      linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
-      linSys->Gi[i + 1] = rosenbrock_dx(i + 1, linSys->Xi, linSys->d);
-
-      linSys->nGi[i] = (-1*linSys->Gi[i]);
-      linSys->nGi[i + 1] = (-1*linSys->Gi[i + 1]);
-    }
+    linSys->nGi[i] = (-1*linSys->Gi[i]);
   }
-
-  
 }
 
 /* ====================================================================================== */
