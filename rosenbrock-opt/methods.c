@@ -59,15 +59,9 @@ void elGauss(sl* linSys){
       checkZeroDivision(A[i][i], linSys->f->strFunc);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
-      for(j = i + 1; j < n - (n%4); j+=4){
+      for(j = i + 1; j < n ; j++){
         A[k][j] -= m * A[i][j];
-        A[k][j + 1] -= m * A[i][j + 1];
-        A[k][j + 2] -= m * A[i][j + 2];
-        A[k][j + 3] -= m * A[i][j + 3];
       }
-
-      for(j; j < n; j++)
-        A[k][j] -= m * A[i][j];
 
       b[k] -= b[i] * m;
     }
@@ -86,15 +80,10 @@ void retroSub(sl* linSys){
 
   for(i = n -1; i >= 0; i--){
     x[i] = b[i];
-    for(j = i + 1; j < n - (n%4); j+=4){
+    for(j = i + 1; j < n; j++){
       x[i] -= A[i][j] * x[j];
-      x[i] -= A[i][j + 1] * x[j + 1];
-      x[i] -= A[i][j + 2] * x[j + 2];
-      x[i] -= A[i][j + 3] * x[j + 3];
-    }
 
-    for(j; j < n; j++)
-      x[i] -= A[i][j] * x[j];
+    }
 
     checkZeroDivision(A[i][i], linSys->f->strFunc);
     x[i] /= A[i][i];
@@ -132,24 +121,32 @@ void calcHessian(sl* linSys) {
 /* ====================================================================================== */
 
 void calcGradient(sl* linSys) {
-  int i;
-  for(i = 0; i < linSys->d - (linSys->d % 4); i += 4){
-    linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
-    linSys->Gi[i + 1] = rosenbrock_dx(i + 1, linSys->Xi, linSys->d);
-    linSys->Gi[i + 2] = rosenbrock_dx(i + 2, linSys->Xi, linSys->d);
-    linSys->Gi[i + 3] = rosenbrock_dx(i + 3, linSys->Xi, linSys->d);
+  int i, ii, istart, iend;
 
-    linSys->nGi[i] = (-1*linSys->Gi[i]);
-    linSys->nGi[i + 1] = (-1*linSys->Gi[i + 1]);
-    linSys->nGi[i + 2] = (-1*linSys->Gi[i + 2]);
-    linSys->nGi[i + 3] = (-1*linSys->Gi[i + 3]);
+  for(ii = 0; i < linSys->d / BLOCK_SIZE; ++ii){
+    istart = ii * BLOCK_SIZE; iend = istart + BLOCK_SIZE;
+
+    for(i = istart; i < iend - (iend % 4); i += 4){
+      linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
+      linSys->Gi[i + 1] = rosenbrock_dx(i + 1, linSys->Xi, linSys->d);
+      linSys->Gi[i + 2] = rosenbrock_dx(i + 2, linSys->Xi, linSys->d);
+      linSys->Gi[i + 3] = rosenbrock_dx(i + 3, linSys->Xi, linSys->d);
+
+      linSys->nGi[i] = (-1*linSys->Gi[i]);
+      linSys->nGi[i + 1] = (-1*linSys->Gi[i + 1]);
+      linSys->nGi[i + 2] = (-1*linSys->Gi[i + 2]);
+      linSys->nGi[i + 3] = (-1*linSys->Gi[i + 3]);
+    }
+
+    for(i; i < iend; i++){
+      linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
+
+      linSys->nGi[i] = (-1*linSys->Gi[i]);
+    }
+
   }
 
-  for(i; i < linSys->d; i++){
-    linSys->Gi[i] = rosenbrock_dx(i, linSys->Xi, linSys->d);
-
-    linSys->nGi[i] = (-1*linSys->Gi[i]);
-  }
+  
 }
 
 /* ====================================================================================== */
