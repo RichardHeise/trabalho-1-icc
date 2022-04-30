@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import subprocess
 
 def makeGraph(kind, title, x, log, alg, search, input, size):
-  subprocess.call(['sh', './time.sh', alg, title, search, input, size])
+  subprocess.call(['sh', './getTables.sh', alg, title, search, input, size])
 
   y = ['n_' + alg, 'o_' + alg]
   df = pd.read_csv(title + '.csv').fillna(0)
@@ -24,7 +24,7 @@ def makeGraph(kind, title, x, log, alg, search, input, size):
   plt.close('all')
 
 def makeGraphDP(kind, title, x, log, alg, input, size):
-  subprocess.call(['sh', './teste.sh', alg, title, input, size])
+  subprocess.call(['sh', './getTableFlops.sh', alg, title, input, size])
 
   y = ['n_' + alg + '_DP', 'o_' + alg + '_DP', 'n_' + alg + '_AVX', 'o_' + alg + '_AVX']
   df = pd.read_csv(title + '.csv').fillna(0)
@@ -54,15 +54,15 @@ def main():
   makeGraph('line', 'Time solver GS (sec)', 'N', True, 'newtonGS_solver', 'rdtsc', 'saidaL2', '9')
   
   
-  makeGraph('line', 'L2 Miss Ratio Default (sec)', 'N', False, 'newtonDefault', 'L2 miss ratio', 'saidaL2', '9')
-  makeGraph('line', 'L2 Miss Ratio Hessian Default (sec)', 'N', False, 'newtonDefault_hessian', 'L2 miss ratio', 'saidaL2', '9')
-  makeGraph('line', 'L2 Miss Ratio gradient Default (sec)', 'N', False, 'newtonDefault_gradient', 'L2 miss ratio', 'saidaL2', '9')
-  makeGraph('line', 'L2 Miss Ratio solver Default (sec)', 'N', False, 'newtonDefault_solver', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio Default', 'N', False, 'newtonDefault', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio Hessian Default', 'N', False, 'newtonDefault_hessian', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio gradient Default', 'N', False, 'newtonDefault_gradient', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio solver Default', 'N', False, 'newtonDefault_solver', 'L2 miss ratio', 'saidaL2', '9')
   
-  makeGraph('line', 'L2 Miss Ratio GS (sec)', 'N', False, 'newtonGS', 'L2 miss ratio', 'saidaL2', '9')
-  makeGraph('line', 'L2 Miss Ratio Hessian GS (sec)', 'N', False, 'newtonGS_hessian', 'L2 miss ratio', 'saidaL2', '9')
-  makeGraph('line', 'L2 Miss Ratio gradient GS (sec)', 'N', False, 'newtonGS_gradient', 'L2 miss ratio', 'saidaL2', '9')
-  makeGraph('line', 'L2 Miss Ratio solver GS (sec)', 'N', False, 'newtonGS_solver', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio GS', 'N', False, 'newtonGS', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio Hessian GS', 'N', False, 'newtonGS_hessian', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio gradient GS', 'N', False, 'newtonGS_gradient', 'L2 miss ratio', 'saidaL2', '9')
+  makeGraph('line', 'L2 Miss Ratio solver GS', 'N', False, 'newtonGS_solver', 'L2 miss ratio', 'saidaL2', '9')
 
 
   makeGraph('line', 'L3 Memory Bandwidth [MBytes por seg] Default', 'N', False, 'newtonDefault', 'L3 bandwidth', 'saidaL3', '10')
