@@ -100,7 +100,6 @@ void calcHessian(sl* linSys) {
     }
     for(j; j < linSys->d; j++)
       linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
-    }
   }
 }
 
