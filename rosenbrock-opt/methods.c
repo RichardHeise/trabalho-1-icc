@@ -90,7 +90,7 @@ void retroSub(sl* linSys){
 /* ====================================================================================== */
 
 void calcHessian(sl* linSys) {
-  int i, j, istart, iend, jstart, jend;
+  int i, j, ii, jj, istart, iend, jstart, jend;
 
   for(ii = 0; ii < linSys->d / B_SIZE; ii++){
     istart = ii * B_SIZE; iend = istart + B_SIZE;
