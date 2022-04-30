@@ -1,0 +1,38 @@
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:28: runL2] Erro 143
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:28: runL2] Erro 143
+Unable to init server: Could not connect: Connection refused
+Unable to init server: Não foi possível conectar: Connection refused
+
+(teste.py:56065): Gdk-CRITICAL **: 15:36:38.987: gdk_cursor_new_for_display: assertion 'GDK_IS_DISPLAY (display)' failed
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+/usr/lib/python3/dist-packages/pandas/plotting/_matplotlib/core.py:652: UserWarning: Data has no positive values, and therefore cannot be log-scaled.
+  return ax.plot(*args, **kwds)
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:25: runL3] Erro 143
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:31: runFLOPS_DP] Erro 143
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:28: runL2] Erro 143
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:25: runL3] Erro 143
+Marker API result file does not exist. This may happen if the application has not called LIKWID_MARKER_CLOSE.
+make: *** [Makefile:31: runFLOPS_DP] Erro 143
+Unable to init server: Could not connect: Connection refused
+Unable to init server: Não foi possível conectar: Connection refused
+
+(teste.py:66036): Gdk-CRITICAL **: 17:19:17.654: gdk_cursor_new_for_display: assertion 'GDK_IS_DISPLAY (display)' failed
