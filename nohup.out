@@ -36,3 +36,14 @@ Unable to init server: Could not connect: Connection refused
 Unable to init server: Não foi possível conectar: Connection refused
 
 (teste.py:66036): Gdk-CRITICAL **: 17:19:17.654: gdk_cursor_new_for_display: assertion 'GDK_IS_DISPLAY (display)' failed
+methods.c: In function ‘gaussSeidel’:
+methods.c:188:7: warning: statement with no effect [-Wunused-value]
+  188 |       for(j; j < i; j++)
+      |       ^~~
+methods.c:198:7: warning: statement with no effect [-Wunused-value]
+  198 |       for(j; j < n; j++)
+      |       ^~~
+Unable to init server: Could not connect: Connection refused
+Unable to init server: Não foi possível conectar: Connection refused
+
+(teste.py:76475): Gdk-CRITICAL **: 19:17:08.092: gdk_cursor_new_for_display: assertion 'GDK_IS_DISPLAY (display)' failed
