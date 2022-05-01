@@ -16,7 +16,7 @@
 
 # Conclusões e problema encontrados
   - O detalhamento da realização do trabalho, assim como as conclusões, análises e problemas encontrados, estão no arquivo 
-  Relatório.pdf
+  RELATORIO-gl19-rfhf19.pdf
 
 # Arquivos interessantes
   - Na home do trabalho temos a topologia do computador utilizado 
