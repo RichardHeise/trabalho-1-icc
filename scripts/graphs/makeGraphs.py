@@ -5,11 +5,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import subprocess
 
-def makeGraph(kind, title, x, log, alg, search, input, size):
+def makeGraph(kind, title, x, log, alg, search, input, size, mult = False):
   subprocess.call(['sh', './getTables.sh', alg, title, search, input, size])
 
   y = ['n_' + alg, 'o_' + alg]
   df = pd.read_csv(title + '.csv').fillna(0)
+  if mult:
+    df.loc[: 'n_' + alg] *= 1000
+    df.loc[: 'o_' + alg] *= 1000
+
   df.plot(
     x = x, 
     y=y, 
@@ -43,15 +47,15 @@ def makeGraphDP(kind, title, x, log, alg, input, size):
   
 
 def main():
-  makeGraph('line', 'Time Default (sec)', 'N', True, 'newtonDefault', 'rdtsc', 'saidaL2', '9')
-  makeGraph('line', 'Time Hessian Default (sec)', 'N', True, 'newtonDefault_hessian', 'rdtsc', 'saidaL2', '9')
-  makeGraph('line', 'Time gradient Default (sec)', 'N', True, 'newtonDefault_gradient', 'rdtsc', 'saidaL2', '9')
-  makeGraph('line', 'Time solver Default (sec)', 'N', True, 'newtonDefault_solver', 'rdtsc', 'saidaL2', '9')
+  makeGraph('line', 'Time Default (milisec)', 'N', True, 'newtonDefault', 'rdtsc', 'saidaL2', '9', True)
+  makeGraph('line', 'Time Hessian Default (milisec)', 'N', True, 'newtonDefault_hessian', 'rdtsc', 'saidaL2', '9', True)
+  makeGraph('line', 'Time gradient Default (milisec)', 'N', True, 'newtonDefault_gradient', 'rdtsc', 'saidaL2', '9', True)
+  makeGraph('line', 'Time solver Default (milisec)', 'N', True, 'newtonDefault_solver', 'rdtsc', 'saidaL2', '9', True)
   
-  makeGraph('line', 'Time GS (sec)', 'N', True, 'newtonGS', 'rdtsc', 'saidaL2', '9')
-  makeGraph('line', 'Time Hessian GS (sec)', 'N', True, 'newtonGS_hessian', 'rdtsc', 'saidaL2', '9')
-  makeGraph('line', 'Time gradient GS (sec)', 'N', True, 'newtonGS_gradient', 'rdtsc', 'saidaL2', '9')
-  makeGraph('line', 'Time solver GS (sec)', 'N', True, 'newtonGS_solver', 'rdtsc', 'saidaL2', '9')
+  makeGraph('line', 'Time GS (milisec)', 'N', True, 'newtonGS', 'rdtsc', 'saidaL2', '9', True)
+  makeGraph('line', 'Time Hessian GS (milisec)', 'N', True, 'newtonGS_hessian', 'rdtsc', 'saidaL2', '9', True)
+  makeGraph('line', 'Time gradient GS (milisec)', 'N', True, 'newtonGS_gradient', 'rdtsc', 'saidaL2', '9', True)
+  makeGraph('line', 'Time solver GS (milisec)', 'N', True, 'newtonGS_solver', 'rdtsc', 'saidaL2', '9', True)
   
   
   makeGraph('line', 'L2 Miss Ratio Default', 'N', False, 'newtonDefault', 'L2 miss ratio', 'saidaL2', '9')
