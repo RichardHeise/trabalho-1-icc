@@ -46,8 +46,9 @@ void elGauss(sl* linSys){
   double** A = linSys->Hi;
   double*  b = linSys->nGi;
   int      n = linSys->d;
+  int i, j;
   
-  for(int i = 0; i < n; i++){
+  for(i = 0; i < n; i++){
     // Partial pivoting
     int pivot = findMax(A, i, n);
     if(pivot != i)
@@ -58,7 +59,7 @@ void elGauss(sl* linSys){
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
-      for(int j = i + 1; j < n - (n%4); j+=4){
+      for(j = i + 1; j < n - (n%4); j+=4){
         A[k][j] -= m * A[i][j];
         A[k][j + 1] -= m * A[i][j + 1];
         A[k][j + 2] -= m * A[i][j + 2];
