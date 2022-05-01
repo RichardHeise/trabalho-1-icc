@@ -11,4 +11,4 @@ make runL3 >> ../scripts/saidaL3.dat
 make runFLOPS_DP >> ../scripts/saidaFDP.dat
 
 cd ../scripts/times
-python3 teste.py
+python3 makeGraphs.py

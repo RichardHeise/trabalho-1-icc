@@ -59,14 +59,7 @@ void elGauss(sl* linSys){
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       double m = A[k][i] / A[i][i];
       A[k][i] = 0;
-      for(j = i + 1; j < n - (n%4); j+=4){
-        A[k][j] -= m * A[i][j];
-        A[k][j + 1] -= m * A[i][j + 1];
-        A[k][j + 2] -= m * A[i][j + 2];
-        A[k][j + 3] -= m * A[i][j + 3];
-      }
-
-      for(; j < n; j++){
+      for(j = i + 1; j < n; j++){
         A[k][j] -= m * A[i][j];
       }
 
@@ -87,14 +80,7 @@ void retroSub(sl* linSys){
 
   for(i = n -1; i >= 0; i--){
     x[i] = b[i];
-    for(j = i + 1; j < n - (n%4); j+=4){
-      x[i] -= A[i][j] * x[j];
-      x[i] -= A[i][j + 1] * x[j + 1];
-      x[i] -= A[i][j + 2] * x[j + 2];
-      x[i] -= A[i][j + 3] * x[j + 3];
-    }
-
-    for(; j < n; j++){
+    for(j = i + 1; j < n; j++){
       x[i] -= A[i][j] * x[j];
     }
 
