@@ -178,8 +178,9 @@ void gaussSeidel(sl* linSys) {
     norm = 0.0;
 
     for (i=0; i < n; ++i) {
-      memset(s, 0, sizeof(double)*4);
-      soma = 0;
+      s[0] = s[1] = s[2] = s[3] = 0.0;
+      soma = 0.0;
+      
       for (j=0; j < i - (i % 4); j+=4){
         s[0] += A[i][j] * X[j];
         s[1] += A[i][j + 1] * X[j + 1];
