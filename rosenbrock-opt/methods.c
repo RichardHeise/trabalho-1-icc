@@ -207,18 +207,13 @@ void gaussSeidel(sl* linSys) {
       soma = s[0] + s[1] + s[2] + s[3];
 
       if(isinf(s[3])){
-        printf("S3");
-        printf("%f\n", s[0]);
-        printf("%f\n", s[1]);
-        printf("%f\n", s[2]);
-        printf("%f\n", s[3]);
-      }
-
-      if(isinf(soma)){
-        printf("%f\n", s[0]);
-        printf("%f\n", s[1]);
-        printf("%f\n", s[2]);
-        printf("%f\n", s[3]);
+        printf("S3\n");
+        printf("%d\n", i);
+        printf("%d\n", j);
+        printf("%lf\n", s[0]);
+        printf("%lf\n", s[1]);
+        printf("%lf\n", s[2]);
+        printf("%lf\n", s[3]);
       }
 
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
