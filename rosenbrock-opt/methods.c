@@ -172,7 +172,6 @@ void gaussSeidel(sl* linSys) {
   int k, i, j;
   double xk, norm, diff = 0;
   double s1, s2, s3, s4, soma;
-  double s[4];
   norm=1.0+error;
 
   for (k=0; norm > error; ++k) {
@@ -182,31 +181,29 @@ void gaussSeidel(sl* linSys) {
       s1 = s2 = s3 = s4 = 0.0;
       soma = 0.0;
 
-      s[0] = s[1] = s[2] = s[3] = 0.0;
-
       for (j=0; j < i - (i % 4); j+=4){
-        s[0] = s[0] + A[i][j] * X[j];
-        s[1] = s[1] + A[i][j + 1] * X[j + 1];
-        s[2] = s[2] + A[i][j + 2] * X[j + 2];
-        s[3] = s[3] + A[i][j + 3] * X[j + 3];
+        s1 += A[i][j] * X[j];
+        s2 += A[i][j + 1] * X[j + 1];
+        s3 += A[i][j + 2] * X[j + 2];
+        s4 += A[i][j + 3] * X[j + 3];
       }
 
       for(; j < i; j++){
-        s[0] = s[0] + A[i][j] * X[j];
+        s1 += A[i][j] * X[j];
       }
 
       for (j=i+1; j < n - (n % 4); j += 4){
-        s[0] = s[0] + A[i][j] * X[j];
-        s[1] = s[1] + A[i][j + 1] * X[j + 1];
-        s[2] = s[2] + A[i][j + 2] * X[j + 2];
-        s[3] = s[3] + A[i][j + 3] * X[j + 3];
+        s1 += A[i][j] * X[j];
+        s2 += A[i][j + 1] * X[j + 1];
+        s3 += A[i][j + 2] * X[j + 2];
+        s4 += A[i][j + 3] * X[j + 3];
       }
 
       for(; j < n; j++){
-        s[0] = s[0] + A[i][j] * X[j];
+        s1 += A[i][j] * X[j];
       }
 
-      soma = s[0] + s[1] + s[2] + s[3];
+      soma = s1 + s2 + s3 + s4;
 
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - soma) / A[i][i];
