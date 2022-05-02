@@ -91,14 +91,6 @@ void retroSub(sl* linSys){
 
 /* ====================================================================================== */
 
-void calcHessian(sl* linSys) {
-  for (int i = 0; i < linSys->d; i++) {
-    for (int j = 0; j < linSys->d; j++) {
-      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
-    }
-  }
-}
-
 // void calcHessian(sl* linSys) {
 //   int i, j, ii, jj, istart, iend, jstart, jend;
 
@@ -131,6 +123,14 @@ void calcHessian(sl* linSys) {
 //   }
   
 // }
+
+void calcHessian(sl* linSys) {
+  for (int i = 0; i < linSys->d; i++) {
+    for (int j = 0; j < linSys->d; j++) {
+      linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
+    }
+  }
+}
 
 /* ====================================================================================== */
 
@@ -189,6 +189,12 @@ void gaussSeidel(sl* linSys) {
       s[0] = s[1] = s[2] = s[3] = 0.0;
       soma = 0.0;
 
+      
+      fprintf(stderr, "sum: %f\n", s[0]);
+      fprintf(stderr, "sum: %f\n", s[1]);
+      fprintf(stderr, "sum: %f\n", s[2]);
+      fprintf(stderr, "sum: %f\n", s[3]);
+
       for (j=0; j < i - (i % 4); j+=4){
         s[0] += A[i][j] * X[j];
         s[1] += A[i][j + 1] * X[j + 1];
@@ -208,6 +214,12 @@ void gaussSeidel(sl* linSys) {
 
       for(; j < n; j++)
         s[0] += A[i][j] * X[j];
+
+      soma += s[0] + s[1] + s[2] + s[3];
+      fprintf(stderr, "sum: %f\n", s[0]);
+      fprintf(stderr, "sum: %f\n", s[1]);
+      fprintf(stderr, "sum: %f\n", s[2]);
+      fprintf(stderr, "sum: %f\n\n", s[3]);
 
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - soma) / A[i][i];
