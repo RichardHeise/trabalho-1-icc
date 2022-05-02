@@ -177,14 +177,15 @@ void gaussSeidel(sl* linSys) {
   for (k=0; norm > error; ++k) {
     norm = 0.0;
 
-    fprintf(stderr, "sum: %f\n", s[0]);
-    fprintf(stderr, "sum: %f\n", s[1]);
-    fprintf(stderr, "sum: %f\n", s[2]);
-    fprintf(stderr, "sum: %f\n", s[3]);
-
     for (i=0; i < n; ++i) {
       s[0] = s[1] = s[2] = s[3] = 0.0;
       soma = 0.0;
+
+      
+      fprintf(stderr, "sum: %f\n", s[0]);
+      fprintf(stderr, "sum: %f\n", s[1]);
+      fprintf(stderr, "sum: %f\n", s[2]);
+      fprintf(stderr, "sum: %f\n", s[3]);
 
       for (j=0; j < i - (i % 4); j+=4){
         s[0] += A[i][j] * X[j];
