@@ -209,16 +209,6 @@ void gaussSeidel(sl* linSys) {
 
       soma = s[0] + s[1] + s[2] + s[3];
 
-      if(isinf(soma)){
-        printf("SOMA\n");
-        printf("%d\n", i);
-        printf("%d\n", j);
-        printf("%lf\n", s[0]);
-        printf("%lf\n", s[1]);
-        printf("%lf\n", s[2]);
-        printf("%lf\n", s[3]);
-      }
-
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - soma) / A[i][i];
       diff = fabs(xk - X[i]);
@@ -229,37 +219,6 @@ void gaussSeidel(sl* linSys) {
   }
 }
 
-// void gaussSeidel(sl* linSys) {
-//   int n = linSys->d;
-  
-//   // 0 in deltai array
-//   memset(linSys->deltai, 0, sizeof(double)*linSys->d);
-//   double **A = linSys->Hi;
-//   double *B = linSys->nGi;
-//   double *X = linSys->deltai;
-//   double error = 10e-6;
-
-//   int k, i, j;
-//   double s, xk, norm, diff = 0;
-//   norm=1.0+error;
-
-//   for (k=0; norm > error; ++k) {
-//     norm = 0.0;
-
-//     for (i=0; i < n; ++i) {
-//       for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
-
-//       for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
-
-//       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
-//       xk = (B[i] - s) / A[i][i];
-//       diff = fabs(xk - X[i]);
-
-//       if (diff > norm) norm = diff;
-//       X[i] = xk;
-//     }
-//   }
-// }
 
 /* ====================================================================================== */
 

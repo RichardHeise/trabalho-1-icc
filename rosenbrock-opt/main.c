@@ -69,8 +69,6 @@ int main(int argc, char** argv){
       LIKWID_MARKER_STOP(name);
       free(name);
 
-			printOutput(output, linSys);
-
       slDestructor(linSys);
     }
     
