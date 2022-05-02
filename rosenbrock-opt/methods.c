@@ -159,61 +159,6 @@ void solveSL(sl* linSys) {
 
 /* ====================================================================================== */
 
-// void gaussSeidel(sl* linSys) {
-//   int n = linSys->d;
-  
-//   // 0 in deltai array
-//   memset(linSys->deltai, 0, sizeof(double)*linSys->d);
-//   double **A = linSys->Hi;
-//   double *B = linSys->nGi;
-//   double *X = linSys->deltai;
-//   double error = 10e-6;
-
-//   int k, i, j;
-//   double xk, norm, diff = 0;
-//   double s[4], soma;
-//   norm=1.0+error;
-
-//   for (k=0; norm > error; ++k) {
-//     norm = 0.0;
-
-//     for (i=0; i < n; ++i) {
-//       memset(s, 0, sizeof(double)*4);
-//       soma = 0;
-//       for (j=0; j < i - (i % 4); j+=4){
-//         s[0] += A[i][j] * X[j];
-//         s[1] += A[i][j + 1] * X[j + 1];
-//         s[2] += A[i][j + 2] * X[j + 2];
-//         s[3] += A[i][j + 3] * X[j + 3];
-//       }
-
-//       for(; j < i; j++)
-//         s[0] += A[i][j] * X[j];
-
-//       for (j=i+1; j < n - (n % 4); j += 4){
-//         s[0] += A[i][j] * X[j];
-//         s[1] += A[i][j + 1] * X[j + 1];
-//         s[2] += A[i][j + 2] * X[j + 2];
-//         s[3] += A[i][j + 3] * X[j + 3];
-//       }
-
-//       for(; j < n; j++)
-//         s[0] += A[i][j] * X[j];
-
-//       for(j = 0; j < 4; j++){
-//         soma += s[j];
-//       }
-
-//       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
-//       xk = (B[i] - soma) / A[i][i];
-//       diff = fabs(xk - X[i]);
-
-//       if (diff > norm) norm = diff;
-//       X[i] = xk;
-//     }
-//   }
-// }
-
 void gaussSeidel(sl* linSys) {
   int n = linSys->d;
   
@@ -225,19 +170,41 @@ void gaussSeidel(sl* linSys) {
   double error = 10e-6;
 
   int k, i, j;
-  double s, xk, norm, diff = 0;
+  double xk, norm, diff = 0;
+  double s[4], soma;
   norm=1.0+error;
 
   for (k=0; norm > error; ++k) {
     norm = 0.0;
 
     for (i=0; i < n; ++i) {
-      for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
+      memset(s, 0, sizeof(double)*4);
+      soma = 0;
+      for (j=0; j < i - (i % 4); j+=4){
+        s[0] += A[i][j] * X[j];
+        s[1] += A[i][j + 1] * X[j + 1];
+        s[2] += A[i][j + 2] * X[j + 2];
+        s[3] += A[i][j + 3] * X[j + 3];
+      }
 
-      for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
+      for(; j < i; j++)
+        s[0] += A[i][j] * X[j];
+
+      for (j=i+1; j < n - (n % 4); j += 4){
+        s[0] += A[i][j] * X[j];
+        s[1] += A[i][j + 1] * X[j + 1];
+        s[2] += A[i][j + 2] * X[j + 2];
+        s[3] += A[i][j + 3] * X[j + 3];
+      }
+
+      for(; j < n; j++)
+        s[0] += A[i][j] * X[j];
+
+      soma += s[0] + s[1] + s[2] + s[3];
+      fprintf(stderr, "sum: %f\n", soma);
 
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
-      xk = (B[i] - s) / A[i][i];
+      xk = (B[i] - soma) / A[i][i];
       diff = fabs(xk - X[i]);
 
       if (diff > norm) norm = diff;
@@ -245,6 +212,38 @@ void gaussSeidel(sl* linSys) {
     }
   }
 }
+
+// void gaussSeidel(sl* linSys) {
+//   int n = linSys->d;
+  
+//   // 0 in deltai array
+//   memset(linSys->deltai, 0, sizeof(double)*linSys->d);
+//   double **A = linSys->Hi;
+//   double *B = linSys->nGi;
+//   double *X = linSys->deltai;
+//   double error = 10e-6;
+
+//   int k, i, j;
+//   double s, xk, norm, diff = 0;
+//   norm=1.0+error;
+
+//   for (k=0; norm > error; ++k) {
+//     norm = 0.0;
+
+//     for (i=0; i < n; ++i) {
+//       for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
+
+//       for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
+
+//       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
+//       xk = (B[i] - s) / A[i][i];
+//       diff = fabs(xk - X[i]);
+
+//       if (diff > norm) norm = diff;
+//       X[i] = xk;
+//     }
+//   }
+// }
 
 /* ====================================================================================== */
 
