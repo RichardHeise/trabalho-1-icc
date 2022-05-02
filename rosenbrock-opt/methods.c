@@ -193,6 +193,9 @@ void gaussSeidel(sl* linSys) {
         s[0] += A[i][j] * X[j];
       }
 
+
+      // fazer n-4 aqui resolve problemas como por ex j = 97 com n = 100,
+      // apesar de sempre calcular um pequeno residuo de 4 mesmo quando não seria necessário
       for (j= i + 1; j < n - 4; j+=4){
         s[0] += A[i][j] * X[j];
         s[1] += A[i][j + 1] * X[j + 1];
