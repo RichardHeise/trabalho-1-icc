@@ -171,7 +171,7 @@ void gaussSeidel(sl* linSys) {
 
   int k, i, j;
   double xk, norm, diff = 0;
-  double s1, s2, s3, s4, soma;
+  double soma;
   double s[4];
   norm=1.0+error;
 
@@ -180,7 +180,6 @@ void gaussSeidel(sl* linSys) {
 
     for (i=0; i < n; ++i) {
       soma = 0.0;
-
       s[0] = s[1] = s[2] = s[3] = 0.0;
 
       for (j=0; j < i - (i % 4); j+=4){
