@@ -219,6 +219,7 @@ void gaussSeidel(sl* linSys) {
       fprintf(stderr, "\n");
 
       soma += s[0] + s[1] + s[2] + s[3];
+      fprintf(stderr, "sum: %1.14e\n", soma);
 
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - soma) / A[i][i];
