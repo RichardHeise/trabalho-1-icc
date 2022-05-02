@@ -193,16 +193,21 @@ void gaussSeidel(sl* linSys) {
         s[0] += A[i][j] * X[j];
       }
 
-      
+      for (j= i + 1; j < n - 4; j+=4){
+        s[0] += A[i][j] * X[j];
+        s[1] += A[i][j + 1] * X[j + 1];
+        s[2] += A[i][j + 2] * X[j + 2];
+        s[3] += A[i][j + 3] * X[j + 3];
+      }
 
-      for(j = i + 1; j < n; j++){
+      for(; j < n; j++){
         s[0] += A[i][j] * X[j];
       }
 
       soma = s[0] + s[1] + s[2] + s[3];
 
-      if(isinf(s[3])){
-        printf("S3\n");
+      if(isinf(soma)){
+        printf("SOMA\n");
         printf("%d\n", i);
         printf("%d\n", j);
         printf("%lf\n", s[0]);
