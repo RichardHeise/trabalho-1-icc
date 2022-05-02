@@ -190,7 +190,7 @@ void gaussSeidel(sl* linSys) {
       soma = 0.0;
 
       for (j=0; j < i - (i % 4); j+=4){
-        fprintf(stderr, "A[i][j] * X[j] = %f\n", A[i][j] * X[j]);
+        fprintf(stderr, "A[i][j] * X[j] = %1.14e\n", A[i][j] * X[j]);
         
         s[0] += A[i][j] * X[j];
         s[1] += A[i][j + 1] * X[j + 1];
@@ -199,12 +199,12 @@ void gaussSeidel(sl* linSys) {
       }
 
       for(; j < i; j++){
-        fprintf(stderr, "A[i][j] * X[j] = %f\n", A[i][j] * X[j]);
+        fprintf(stderr, "A[i][j] * X[j] = %1.14e\n", A[i][j] * X[j]);
         s[0] += A[i][j] * X[j];
       }
 
       for (j=i+1; j < n - (n % 4); j += 4){
-        fprintf(stderr, "A[i][j] * X[j] = %f\n", A[i][j] * X[j]);
+        fprintf(stderr, "A[i][j] * X[j] = %1.14e\n", A[i][j] * X[j]);
         s[0] += A[i][j] * X[j];
         s[1] += A[i][j + 1] * X[j + 1];
         s[2] += A[i][j + 2] * X[j + 2];
@@ -212,7 +212,7 @@ void gaussSeidel(sl* linSys) {
       }
 
       for(; j < n; j++){
-        fprintf(stderr, "A[i][j] * X[j] = %f\n", A[i][j] * X[j]);
+        fprintf(stderr, "A[i][j] * X[j] = %1.14e\n", A[i][j] * X[j]);
         s[0] += A[i][j] * X[j];
       }
 
