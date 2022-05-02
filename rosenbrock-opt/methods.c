@@ -189,7 +189,7 @@ void gaussSeidel(sl* linSys) {
         s[3] += A[i][j + 3] * X[j + 3];
       }
 
-      for(j; j < i; j++){
+      for(; j < i; j++){
         s[0] += A[i][j] * X[j];
       }
 
@@ -200,7 +200,7 @@ void gaussSeidel(sl* linSys) {
         s[3] += A[i][j + 3] * X[j + 3];
       }
 
-      for(j; j < n; j++){
+      for(; j < n; j++){
         s[0] += A[i][j] * X[j];
       }
 
