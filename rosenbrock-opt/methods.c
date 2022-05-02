@@ -237,7 +237,7 @@ void gaussSeidel(sl* linSys) {
 
       for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
 
-      checkZeroDivision(A[i][i], linSys->f->strFunc);
+      checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - s) / A[i][i];
       diff = fabs(xk - X[i]);
 
