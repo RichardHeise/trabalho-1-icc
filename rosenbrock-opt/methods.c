@@ -124,14 +124,6 @@ void calcHessian(sl* linSys) {
   
 }
 
-// void calcHessian(sl* linSys) {
-//   for (int i = 0; i < linSys->d; i++) {
-//     for (int j = 0; j < linSys->d; j++) {
-//       linSys->Hi[i][j] = rosenbrock_dxdy(i, j, linSys->Xi, linSys->d); 
-//     }
-//   }
-// }
-
 /* ====================================================================================== */
 
 void calcGradient(sl* linSys) {
@@ -222,38 +214,6 @@ void gaussSeidel(sl* linSys) {
     }
   }
 }
-
-// void gaussSeidel(sl* linSys) {
-//   int n = linSys->d;
-  
-//   // 0 in deltai array
-//   memset(linSys->deltai, 0, sizeof(double)*linSys->d);
-//   double **A = linSys->Hi;
-//   double *B = linSys->nGi;
-//   double *X = linSys->deltai;
-//   double error = 10e-6;
-
-//   int k, i, j;
-//   double s, xk, norm, diff = 0;
-//   norm=1.0+error;
-
-//   for (k=0; norm > error; ++k) {
-//     norm = 0.0;
-
-//     for (i=0; i < n; ++i) {
-//       for (s=0, j=0; j < i; ++j) s += A[i][j] * X[j];
-
-//       for (j=i+1; j < n; ++j) s += A[i][j] * X[j];
-
-//       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
-//       xk = (B[i] - s) / A[i][i];
-//       diff = fabs(xk - X[i]);
-
-//       if (diff > norm) norm = diff;
-//       X[i] = xk;
-//     }
-//   }
-// }
 
 /* ====================================================================================== */
 
