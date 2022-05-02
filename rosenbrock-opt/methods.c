@@ -206,6 +206,10 @@ void gaussSeidel(sl* linSys) {
 
       soma = s[0] + s[1] + s[2] + s[3];
 
+      if(isinf(soma)){
+        printf("lixo\n");
+      }
+
       checkZeroDivision(A[i][i], linSys->f->strFunc, __func__);
       xk = (B[i] - soma) / A[i][i];
       diff = fabs(xk - X[i]);
