@@ -206,6 +206,14 @@ void gaussSeidel(sl* linSys) {
 
       soma = s[0] + s[1] + s[2] + s[3];
 
+      if(isinf(s[3])){
+        printf("S3");
+        printf("%f\n", s[0]);
+        printf("%f\n", s[1]);
+        printf("%f\n", s[2]);
+        printf("%f\n", s[3]);
+      }
+
       if(isinf(soma)){
         printf("%f\n", s[0]);
         printf("%f\n", s[1]);
